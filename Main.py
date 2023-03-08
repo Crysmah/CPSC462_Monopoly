@@ -54,11 +54,9 @@ def quit_button():
     return
 
 def main():
-    draw_background()
-    MENU_MOUSE_POS = pygame.mouse.get_pos()
-
-    
-
+    while True:
+        draw_background()
+        MENU_MOUSE_POS = pygame.mouse.get_pos()
 
 if __name__ == '__main__':
     main()
