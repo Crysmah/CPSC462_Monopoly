@@ -27,6 +27,13 @@ share/python-wheels/
 *.egg
 MANIFEST
 
+# Packages
+###################
+# It is better to unpack these files and drop the raw source
+*.zip
+*.jar
+*.7z
+
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
