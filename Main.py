@@ -26,6 +26,19 @@ def draw_background():
     for button in [SETTING_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
             button.update(DISPLAY)
+            
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            # if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+            #     play()
+            if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
+                options()
+            # if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
+            #     pygame.quit()
+            #     sys.exit()
     pygame.display.update()
 
 # Access to the game    
