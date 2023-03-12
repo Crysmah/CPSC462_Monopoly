@@ -6,6 +6,8 @@ pygame.init()
 WIDTH, HEIGHT = 1280, 720
 DISPLAY = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Menu Screen")
+background_image = pygame.image.load("Images/background.PNG")
+button_rect_image = image=pygame.image.load("images/Button Rect.png")
 
 def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("images/font.ttf", size)
@@ -25,7 +27,7 @@ def start():
 # Draw the background for the Menu Screen
 ## update this function
 def draw_background(image):
-    background_image = pygame.image.load(image)
+    #background_image = pygame.image.load(image)
     ''' Re-size the background image'''
     background = pygame.transform.scale(background_image,(WIDTH, HEIGHT))
     DISPLAY.blit(background, (0,0))
@@ -41,6 +43,7 @@ def setting_button():
 # Close the application
 ## thinking about it
 def quit_button():
+    pygame.quit()
     sys.exit()
 
 #  Change color and appearance when
@@ -55,7 +58,6 @@ def main():
         draw_background("images/background.PNG")
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
-        button_rect_image = image=pygame.image.load("images/Button Rect.png")
         button_rect = pygame.transform.scale(button_rect_image, (300, 80))
         PLAY_BUTTON = Button(button_rect, pos=(640, 220), text_input="PLAY", font=get_font(40),
                             base_color="#d7fcd4", hovering_color="White")
@@ -72,6 +74,13 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if PLAY_BUTTON.rect.collidepoint(MENU_MOUSE_POS):
+                    print("PLAY")
+                if SETTING_BUTTON.rect.collidepoint(MENU_MOUSE_POS):
+                    print("Setting")
+                if QUIT_BUTTON.rect.collidepoint(MENU_MOUSE_POS):
+                    quit_button()
 
         pygame.display.update()
     
