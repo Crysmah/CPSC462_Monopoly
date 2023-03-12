@@ -15,11 +15,11 @@ def start():
     """Starts the music"""
     if True:
         try:
-            pygame.mixer.music.load("Soul.mp3")
+            pygame.mixer.music.load("vibes.mp3")
             pygame.mixer.music.set_volume(0.1)
             pygame.mixer.music.play(-1, 0.0, 500)
         except pygame.error as pygame_error:
-            print(f'Cannot open {Soul.mp3}')
+            print(f'Cannot open {"vibes.mp3"}')
             raise SystemExit(1) from pygame_error
 
 # Draw the background for the Menu Screen
@@ -41,15 +41,7 @@ def setting_button():
 # Close the application
 ## thinking about it
 def quit_button():
-    sys.exit()
-
-#  Change color and appearance when
-#  the mouse cursor interacts with them.
-def update_button(button, MENU_MOUSE_POS):
-    button.changeColor(MENU_MOUSE_POS)
-    button.update(DISPLAY)
-    
-    sys.exit()
+    pygame.quit()
 
 #  Change color and appearance when
 #  the mouse cursor interacts with them.
@@ -85,4 +77,3 @@ def main():
     
 if __name__ == '__main__':
     main()
-
