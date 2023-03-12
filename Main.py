@@ -34,7 +34,26 @@ def draw_background(image):
 
 # Access to the game    
 def play_button():
-    return
+    while True:
+        PLAY_MOUSE_POS = pygame.mouse.get_pos()
+        
+        draw_background("images/playBackground.png")
+        play_back_button = pygame.image.load("images/playBackButton.png")
+        scaled_play_back_button = pygame.transform.scale(play_back_button, (40, 40))
+        return_button = Button(scaled_play_back_button, pos=(25, 25), text_input="", font=get_font(40),
+                            base_color="#d7fcd4", hovering_color="White")
+        return_button.update(DISPLAY)
+        #DISPLAY.blit(scaled_play_back_button, (10,10))
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if return_button.checkForInput(PLAY_MOUSE_POS):
+                    main()
+                
+        pygame.display.update() 
 
 # Changing the music and sound
 def setting_button():
@@ -112,7 +131,7 @@ def event_handler():
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.rect.collidepoint(MENU_MOUSE_POS):
-                    print("PLAY")
+                    play_button()
                 if SETTING_BUTTON.rect.collidepoint(MENU_MOUSE_POS):
                     setting_button()
                 if QUIT_BUTTON.rect.collidepoint(MENU_MOUSE_POS):
