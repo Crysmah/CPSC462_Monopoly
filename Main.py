@@ -18,11 +18,11 @@ def start():
     """Starts the music"""
     if True:
         try:
-            pygame.mixer.music.load("Soul.mp3")
+            pygame.mixer.music.load("vibes.mp3")
             pygame.mixer.music.set_volume(0.1)
             pygame.mixer.music.play(-1, 0.0, 500)
         except pygame.error as pygame_error:
-            print(f'Cannot open {Soul.mp3}')
+            print(f'Cannot open {"vibes.mp3"}')
             raise SystemExit(1) from pygame_error
 
 # Draw the background for the Menu Screen
