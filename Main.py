@@ -61,7 +61,7 @@ def setting_button():
     while True:
         MENU_MOUSE_POS = pygame.mouse.get_pos()
         
-        draw_background("Images/setting_background.png")
+        draw_background("Images/playBackground.png")
 
         button_rect = pygame.transform.scale(button_rect_image, (300, 80))
         VOLUME_LABEL = get_font(40).render(f"Volume: {int(volume * 100)}%", True, (255, 255, 255))
