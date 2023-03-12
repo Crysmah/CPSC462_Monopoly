@@ -8,7 +8,6 @@ DISPLAY = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Menu Screen")
 background_image = pygame.image.load("Images/background.PNG")
 button_rect_image = image=pygame.image.load("images/Button Rect.png")
-setting_image = pygame.image.load("Images/setting_background.png")
 
 def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("images/font.ttf", size)
@@ -28,7 +27,7 @@ def start():
 # Draw the background for the Menu Screen
 ## update this function
 def draw_background(image):
-    #background_image = pygame.image.load(image)
+    background_image = pygame.image.load(image)
     ''' Re-size the background image'''
     background = pygame.transform.scale(background_image,(WIDTH, HEIGHT))
     DISPLAY.blit(background, (0,0))
@@ -41,8 +40,9 @@ def play_button():
 def setting_button():
     volume = 0.1 # initialize volume to a default value
     while True:
-        draw_background(setting_image)
         MENU_MOUSE_POS = pygame.mouse.get_pos()
+        
+        draw_background("Images/setting_background.png")
 
         button_rect = pygame.transform.scale(button_rect_image, (300, 80))
         VOLUME_LABEL = get_font(40).render(f"Volume: {int(volume * 100)}%", True, (255, 255, 255))
