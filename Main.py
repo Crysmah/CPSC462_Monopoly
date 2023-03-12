@@ -24,8 +24,8 @@ def start():
 
 # Draw the background for the Menu Screen
 ## update this function
-def draw_background():
-    background_image = pygame.image.load("images/background.PNG")
+def draw_background(image):
+    background_image = pygame.image.load(image)
     ''' Re-size the background image'''
     background = pygame.transform.scale(background_image,(WIDTH, HEIGHT))
     DISPLAY.blit(background, (0,0))
@@ -52,7 +52,7 @@ def update_button(button, MENU_MOUSE_POS):
 def main():
     start()
     while True:
-        draw_background()
+        draw_background("images/background.PNG")
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
         button_rect_image = image=pygame.image.load("images/Button Rect.png")
