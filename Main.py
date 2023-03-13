@@ -1,6 +1,6 @@
 """This is wher all the functions goes in the game"""
 
-from game import *
+from mathopoly.game import *
 
 def main():
     """Main function to run the game"""

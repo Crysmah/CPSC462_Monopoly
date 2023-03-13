@@ -1,24 +1,24 @@
 import pygame, sys
-from button import Button
+from mathopoly.button import Button
 
 pygame.init()
 
 WIDTH, HEIGHT = 1280, 720
 DISPLAY = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Menu Screen")
-background_image = pygame.image.load("images/background.PNG")
-button_rect_image = image=pygame.image.load("images/Button Rect.png")
+background_image = pygame.image.load("mathopoly/images/background.PNG")
+button_rect_image = image=pygame.image.load("mathopoly/images/Button Rect.png")
 
 
 def get_font(size): # Returns Press-Start-2P in the desired size
-    return pygame.font.Font("images/font.ttf", size)
+    return pygame.font.Font("mathopoly/images/font.ttf", size)
 
 # plays music
 def start():
     """Starts the music"""
     if True:
         try:
-            pygame.mixer.music.load("music/vibes.mp3")
+            pygame.mixer.music.load("mathopoly/music/vibes.mp3")
             pygame.mixer.music.set_volume(0.1)
             pygame.mixer.music.play(-1, 0.0, 500)
         except pygame.error as pygame_error:
@@ -37,13 +37,20 @@ def draw_background(image):
 def play_button():
     while True:
         PLAY_MOUSE_POS = pygame.mouse.get_pos()
-        
-        draw_background("images/playBackground.png")
-        play_back_button = pygame.image.load("images/playBackButton.png")
+        draw_background("mathopoly/images/playBackground.png")
+
+        play_back_button = pygame.image.load("mathopoly/images/playBackButton.png")
         scaled_play_back_button = pygame.transform.scale(play_back_button, (40, 40))
         return_button = Button(scaled_play_back_button, pos=(25, 25), text_input="", font=get_font(40),
                             base_color="#d7fcd4", hovering_color="White")
+        
+        widget_button = pygame.image.load("mathopoly/images/widgetButton.png")
+        scaled_widget_button = pygame.transform.scale(widget_button, (40, 40))
+        settings = Button(scaled_widget_button, pos=(1240, 25), text_input="", font=get_font(40),
+                        base_color="#d7fcd4", hovering_color="White")
+
         return_button.update(DISPLAY)
+        settings.update(DISPLAY)
         #DISPLAY.blit(scaled_play_back_button, (10,10))
         
         for event in pygame.event.get():
@@ -53,6 +60,8 @@ def play_button():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if return_button.checkForInput(PLAY_MOUSE_POS):
                     return
+                if settings.checkForInput(PLAY_MOUSE_POS):
+                    setting_button()
                 
         pygame.display.update() 
 
@@ -62,7 +71,7 @@ def setting_button():
     while True:
         MENU_MOUSE_POS = pygame.mouse.get_pos()
         
-        draw_background("images/playBackground.png")
+        draw_background("mathopoly/images/playBackground.png")
 
         button_rect = pygame.transform.scale(button_rect_image, (300, 80))
         VOLUME_LABEL = get_font(40).render(f"Volume: {int(volume * 100)}%", True, (255, 255, 255))

@@ -1,6 +1,6 @@
 import pygame, sys
-from button import Button
-from scene import *
+from mathopoly.button import Button
+from mathopoly.scene import *
 
 class Game():
 
@@ -9,7 +9,7 @@ class Game():
     def run():
         start()
         while True:
-            draw_background("images/background.PNG")
+            draw_background("mathopoly/images/background.PNG")
             MENU_MOUSE_POS = pygame.mouse.get_pos()
 
             button_rect = pygame.transform.scale(button_rect_image, (300, 80))
