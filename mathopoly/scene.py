@@ -46,7 +46,7 @@ def play_button():
         
         widget_button = pygame.image.load("mathopoly/images/widgetButton.png")
         scaled_widget_button = pygame.transform.scale(widget_button, (40, 40))
-        settings = Button(scaled_widget_button, pos=(1240, 25), text_input="", font=get_font(40),
+        settings = Button(scaled_widget_button, pos=(1250, 25), text_input="", font=get_font(40),
                         base_color="#d7fcd4", hovering_color="White")
 
         return_button.update(DISPLAY)
