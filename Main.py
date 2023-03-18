@@ -1,4 +1,4 @@
-"""This is wher all the functions goes in the game"""
+"""This is where all the functions goes in the game"""
 
 from mathopoly.game import *
 
