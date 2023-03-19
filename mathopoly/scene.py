@@ -51,7 +51,6 @@ def play_button():
 
         return_button.update(DISPLAY)
         settings.update(DISPLAY)
-        #DISPLAY.blit(scaled_play_back_button, (10,10))
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
