@@ -7,7 +7,7 @@ WIDTH, HEIGHT = 1280, 720
 DISPLAY = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Menu Screen")
 background_image = pygame.image.load("mathopoly/images/background.PNG")
-button_rect_image = image=pygame.image.load("mathopoly/images/Button Rect.png")
+button_rect_image = pygame.image.load("mathopoly/images/Button Rect.png")
 
 
 def get_font(size): # Returns Press-Start-2P in the desired size

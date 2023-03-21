@@ -1,73 +1,81 @@
-"""Dice Class"""
-
-import pygame, sys
+import pygame
 import random
 
-# initialize pygame
+# initialize Pygame
 pygame.init()
 
-# set the dimensions of the window
-WIDTH = 400
-HEIGHT = 200
-WINDOW_SIZE = (WIDTH, HEIGHT)
+# set the window size
+WINDOW_SIZE = (400, 400)
 
-# create the window
+# create the Pygame window
 screen = pygame.display.set_mode(WINDOW_SIZE)
 
-# load the images of the dice faces
-dice_faces = [
-    pygame.image.load("mathopoly/images/die1.png"),
-    pygame.image.load("mathopoly/images/die2.png"),
-    pygame.image.load("mathopoly/images/die3.png"),
-    pygame.image.load("mathopoly/images/die4.png"),
-    pygame.image.load("mathopoly/images/die5.png"),
-    pygame.image.load("mathopoly/images/die6.png")
-]
+# set the Pygame window title
+pygame.display.set_caption("Dice Roller")
 
-# define the size and position of the dice
-DICE_SIZE = 100
-DICE_MARGIN = 50
-DICE_POS_1 = (DICE_MARGIN, HEIGHT/2 - DICE_SIZE/2)
-DICE_POS_2 = (WIDTH - DICE_SIZE - DICE_MARGIN, HEIGHT/2 - DICE_SIZE/2)
+# load the dice images
+dice_images = []
+for i in range(1, 7):
+    dice_images.append(pygame.image.load(f"images/die_{i}.png"))
 
-# set the initial values for the dice
-dice_value_1 = 1
-dice_value_2 = 1
+# set the font for the roll button
+font = pygame.font.SysFont(None, 30)
 
-# function to roll the dice and update their values
-def roll_dice():
-    global dice_value_1, dice_value_2
-    dice_value_1 = random.randint(1, 6)
-    dice_value_2 = random.randint(1, 6)
+# create the roll button
+roll_button = pygame.Rect(150, 300, 100, 50)
 
-# draw the dice on the screen
-def draw_dice():
-    # clear the screen
-    screen.fill((255, 255, 255))
+# initialize the dice values
+die1_value = 1
+die2_value = 1
 
-    # draw the first dice
-    screen.blit(dice_faces[dice_value_1-1], DICE_POS_1)
+# initialize the total value
+total_value = 0
 
-    # draw the second dice
-    screen.blit(dice_faces[dice_value_2-1], DICE_POS_2)
+# initialize the roll button state
+button_down = False
 
-    # update the screen
-    pygame.display.flip()
-
-# roll the dice initially
-roll_dice()
-
-# loop to handle events and draw the dice
+# set up the game loop
 running = True
 while running:
+    # handle events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                roll_dice()
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if roll_button.collidepoint(event.pos):
+                button_down = True
+        elif event.type == pygame.MOUSEBUTTONUP:
+            if roll_button.collidepoint(event.pos):
+                button_down = False
+                # roll the dice
+                die1_value = random.randint(1, 6)
+                die2_value = random.randint(1, 6)
+                total_value = die1_value + die2_value
 
-    draw_dice()
+    # fill the background color
+    screen.fill((255, 255, 255))
 
-# quit pygame
+    # draw the dice
+    screen.blit(dice_images[die1_value - 1], (100, 100))
+    screen.blit(dice_images[die2_value - 1], (200, 100))
+
+    # draw the roll button
+    color = (200, 200, 200)
+    if button_down:
+        color = (150, 150, 150)
+    pygame.draw.rect(screen, color, roll_button)
+    text = font.render("Roll", True, (0, 0, 0))
+    text_rect = text.get_rect(center=roll_button.center)
+    screen.blit(text, text_rect)
+
+    # draw the total
+    total_text = font.render(f"Total: {total_value}", True, (0, 0, 0))
+    screen.blit(total_text, (150, 250))
+
+    # update the display
+    pygame.display.update()
+    print(f"Total: {total_value}")
+
+
+# quit Pygame
 pygame.quit()
