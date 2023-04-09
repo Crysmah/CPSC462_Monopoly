@@ -56,8 +56,8 @@ while running:
     screen.fill((255, 255, 255))
 
     # draw the dice
-    screen.blit(dice_images[die1_value - 1], (100, 100))
-    screen.blit(dice_images[die2_value - 1], (200, 100))
+    screen.blit(dice_images[die1_value - 1], (50, 90))
+    screen.blit(dice_images[die2_value - 1], (200, 90))
 
     # draw the roll button
     color = (200, 200, 200)
@@ -70,7 +70,7 @@ while running:
 
     # draw the total
     total_text = font.render(f"Total: {total_value}", True, (0, 0, 0))
-    screen.blit(total_text, (150, 250))
+    screen.blit(total_text, (160, 250))
 
     # update the display
     pygame.display.update()
