@@ -45,9 +45,6 @@ def play_button():
     
     # initialize the total value
     total_value = 0
-
-    # initialize the roll button state
-    button_down = False
     
     while True:
         PLAY_MOUSE_POS = pygame.mouse.get_pos()
@@ -62,22 +59,19 @@ def play_button():
         scaled_widget_button = pygame.transform.scale(widget_button, (40, 40))
         settings = Button(scaled_widget_button, pos=(1250, 25), text_input="", font=get_font(40),
                         base_color="#d7fcd4", hovering_color="White")
-
+        
+        # creating the roll button
+        button_rect = pygame.transform.scale(button_rect_image, (100, 55))
+        ROLL_BUTTON = Button(button_rect, pos=(WIDTH/2 - 50, HEIGHT/2), text_input="ROLL",
+                             font=get_font(20), base_color="#d7fcd4", hovering_color="White")
+        
+        update_button(ROLL_BUTTON, PLAY_MOUSE_POS)
 
         return_button.update(DISPLAY)
         settings.update(DISPLAY)
         
-        button_rect = pygame.transform.scale(button_rect_image, (300, 80))
-        roll_button_drawn = Button(button_rect, pos=(640, 220), text_input="PLAY", font=get_font(40),
-                        base_color="#d7fcd4", hovering_color="White")
-              
         for i in range(1, 7):
             dice_images.append(pygame.image.load(f"mathopoly/images/die_{i}.png"))
-        # set the font for the roll button
-        font = pygame.font.SysFont(None, 30)
-
-        # create the roll button
-        roll_button = pygame.Rect(WIDTH/2 - 50, HEIGHT/2, 100, 50)
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -90,11 +84,7 @@ def play_button():
                     setting_button()
                     
                 """Roll button"""
-                if roll_button.collidepoint(PLAY_MOUSE_POS):
-                    button_down = True
-            elif event.type == pygame.MOUSEBUTTONUP:
-                if roll_button.collidepoint(PLAY_MOUSE_POS):
-                    button_down = False
+                if ROLL_BUTTON.rect.collidepoint(PLAY_MOUSE_POS):
                     # roll the dice
                     die1_value = random.randint(1, 6)
                     die2_value = random.randint(1, 6)
@@ -104,16 +94,6 @@ def play_button():
         # draw the dice
         DISPLAY.blit(dice_images[die1_value - 1], (WIDTH/2 + 50, 90))
         DISPLAY.blit(dice_images[die2_value - 1], (WIDTH/2 - 200, 90))
-        
-        
-        # draw the roll button
-        color = (200, 200, 200)
-        if button_down:
-            color = (150, 150, 150)
-        pygame.draw.rect(DISPLAY, color, roll_button)
-        text = font.render("Roll", True, (0, 0, 0))
-        text_rect = text.get_rect(center=roll_button.center)
-        DISPLAY.blit(text, text_rect)
                 
         pygame.display.update() 
 
