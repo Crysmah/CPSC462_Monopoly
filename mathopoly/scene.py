@@ -84,6 +84,8 @@ def play_button():
                     return
                 if settings.checkForInput(PLAY_MOUSE_POS):
                     setting_button()
+                if roll_button.checkForInput(PLAY_MOUSE_POS):
+                    roll_and_update()
 
         pygame.display.update()
 
