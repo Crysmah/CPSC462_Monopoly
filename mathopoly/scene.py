@@ -54,21 +54,15 @@ def play_button():
         PLAY_MOUSE_POS = pygame.mouse.get_pos()
         draw_background("mathopoly/images/playBackground.png")
 
-        play_back_button = pygame.image.load(
-            "mathopoly/images/playBackButton.png")
-        scaled_play_back_button = pygame.transform.scale(
-            play_back_button, (40, 40))
-        return_button = Button(scaled_play_back_button, pos=(25, 25), text_input="", font=get_font(40),
-                               base_color="#d7fcd4", hovering_color="White")
+        return_button = clickable_image_buttons(
+            "mathopoly/images/playBackButton.png", (25, 25))
+        settings = clickable_image_buttons(
+            "mathopoly/images/widgetButton.png", (1250, 25))
 
-        widget_button = pygame.image.load("mathopoly/images/widgetButton.png")
-        scaled_widget_button = pygame.transform.scale(widget_button, (40, 40))
-        settings = Button(scaled_widget_button, pos=(1250, 25), text_input="", font=get_font(40),
-                          base_color="#d7fcd4", hovering_color="White")
-
-        scaled_build_button = pygame.transform.scale(button_rect_image, (150, 40))
+        scaled_build_button = pygame.transform.scale(
+            button_rect_image, (150, 40))
         roll_button = Button(scaled_build_button, pos=(600, 200), text_input="Roll", font=get_font(20),
-                              base_color="#d7fcd4", hovering_color="White")
+                             base_color="#d7fcd4", hovering_color="White")
 
         roll_button.update(DISPLAY)
         return_button.update(DISPLAY)
@@ -147,21 +141,22 @@ def update_button(button, MENU_MOUSE_POS):
     button.changeColor(MENU_MOUSE_POS)
     button.update(DISPLAY)
 
+
 def roll_dice():
     roll = random.randint(1, 6)
     return roll
 
+
 def roll_and_update():
     for i in range(10):
         dice1_image = random.choice(dice_images)
-        dice1_image = pygame.transform.scale(dice1_image, (100,100))
+        dice1_image = pygame.transform.scale(dice1_image, (100, 100))
         dice2_image = random.choice(dice_images)
         dice2_image = pygame.transform.scale(dice2_image, (100, 100))
         DISPLAY.blit(dice1_image, (500, 250))
         DISPLAY.blit(dice2_image, (600, 250))
         pygame.display.update()
         time.sleep(0.1)
-
 
     roll1 = roll_dice()
     roll2 = roll_dice()
@@ -170,13 +165,13 @@ def roll_and_update():
     print(f"Total: {total_value}")
 
     dice1_image = dice_images[roll1-1]
-    dice1_image = pygame.transform.scale(dice1_image, (100,100))
+    dice1_image = pygame.transform.scale(dice1_image, (100, 100))
 
     dice2_image = dice_images[roll2-1]
-    dice2_image = pygame.transform.scale(dice2_image,(100,100))
+    dice2_image = pygame.transform.scale(dice2_image, (100, 100))
 
-    DISPLAY.blit(dice1_image,(500,250))
-    DISPLAY.blit(dice2_image,(600,250))
+    DISPLAY.blit(dice1_image, (500, 250))
+    DISPLAY.blit(dice2_image, (600, 250))
     pygame.display.update()
 
     while True:
@@ -187,9 +182,30 @@ def roll_and_update():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 return
 
-# TO DO
-# Properly display on screen
-# Add sound effects to rolling animation
+
+def create_button(pos, text_input, font, base_color, hovering_color):
+    scaled_button_image = pygame.transform.scale(button_rect_image, (300, 80))
+    return Button(scaled_button_image, pos=pos, text_input=text_input, font=get_font(font),
+                  base_color=base_color, hovering_color=hovering_color)
+
+# Function to draw text on the screen
+
+
+def draw_text(text, font, color, surface, x, y):
+    text_surface = font.render(text, True, color)
+    text_rect = text_surface.get_rect()
+    text_rect.topleft = (x, y)
+    surface.blit(text_surface, text_rect)
+
+# Function to create the image based buttons
+
+
+def clickable_image_buttons(image_path, position):
+    button_image = pygame.image.load(image_path)
+    scaled_button_image = pygame.transform.scale(button_image, (40, 40))
+    button = Button(scaled_button_image, pos=position, text_input="", font=get_font(40),
+                    base_color="#d7fcd4", hovering_color="White")
+    return button
 
 
 def create_players():
@@ -208,26 +224,18 @@ def create_players():
         MOUSE_POS = pygame.mouse.get_pos()
         draw_background("mathopoly/images/back.png")
 
-        play_back_button = pygame.image.load(
-            "mathopoly/images/playBackButton.png")
-        scaled_play_back_button = pygame.transform.scale(
-            play_back_button, (40, 40))
-        return_button = Button(scaled_play_back_button, pos=(25, 25), text_input="", font=get_font(40),
-                               base_color="#d7fcd4", hovering_color="White")
-
-        widget_button = pygame.image.load("mathopoly/images/widgetButton.png")
-        scaled_widget_button = pygame.transform.scale(widget_button, (40, 40))
-        settings = Button(scaled_widget_button, pos=(1250, 25), text_input="", font=get_font(40),
-                          base_color="#d7fcd4", hovering_color="White")
+        return_button = clickable_image_buttons(
+            "mathopoly/images/playBackButton.png", (25, 25))
+        settings = clickable_image_buttons(
+            "mathopoly/images/widgetButton.png", (1250, 25))
 
         return_button.update(DISPLAY)
         settings.update(DISPLAY)
 
-        add_Player = Button(button_background, pos=(420, 330), text_input="Add Player",
-                            font=get_font(28), base_color="#d7fcd4", hovering_color="White")
-
-        start_Game = Button(button_background, pos=(420, 590), text_input="Start Game",
-                            font=get_font(28), base_color="#d7fcd4", hovering_color="White")
+        add_Player = create_button(
+            (420, 330), "Add Player", 28, "#d7fcd4", "White")
+        start_Game = create_button(
+            (420, 590), "Start Game", 28, "#d7fcd4", "White")
 
         update_button(add_Player, MOUSE_POS)
         update_button(start_Game, MOUSE_POS)
@@ -262,9 +270,6 @@ def create_players():
                     else:
                         print("Not enough players")
 
-                elif list_rect.collidepoint(event.pos):
-                    print(players)
-
             elif event.type == pygame.KEYDOWN:
 
                 if event.key == pygame.K_BACKSPACE:
@@ -288,16 +293,16 @@ def create_players():
                     pygame.mouse.set_visible(True)
                     input_active = False
 
+        draw_text(player_input, font, pygame.Color("black"),
+                  DISPLAY, input_rect.x + 5, input_rect.y + 5)
         pygame.draw.rect(DISPLAY, pygame.Color("gray"), input_rect, 2)
-        input_surface = font.render(player_input, True, pygame.Color("black"))
-        DISPLAY.blit(input_surface, (input_rect.x + 5, input_rect.y + 5))
 
         # Draw the player list box
         pygame.draw.rect(DISPLAY, pygame.Color("gray"), list_rect, 2)
         for i, player in enumerate(players):
-            player_surface = font.render(player, True, pygame.Color("black"))
-            DISPLAY.blit(player_surface, (list_rect.x +
-                         5, list_rect.y + 5 + i * 25))
+            draw_text(player, font, pygame.Color("black"), DISPLAY,
+                      list_rect.x + 5, list_rect.y + 5 + i * 25)
+            pygame.draw.rect(DISPLAY, pygame.Color("gray"), list_rect, 2)
 
         # Update the display
         pygame.display.flip()
