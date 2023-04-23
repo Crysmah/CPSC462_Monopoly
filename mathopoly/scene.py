@@ -29,11 +29,11 @@ def start():
     """Starts the music"""
     if True:
         try:
-            pygame.mixer.music.load("mathopoly/music/vibes.mp3")
+            pygame.mixer.music.load("mathopoly/music/Late-at-Night.mp3")
             pygame.mixer.music.set_volume(0.1)
             pygame.mixer.music.play(-1, 0.0, 500)
         except pygame.error as pygame_error:
-            print(f'Cannot open {"vibes.mp3"}')
+            print(f'Cannot open {"FirstSteps.mp3"}')
             raise SystemExit(1) from pygame_error
 
 # Draw the background for the Menu Screen
@@ -197,16 +197,16 @@ def create_players():
 
     players = []
     player_input = ""
-    input_rect = pygame.Rect(200, 200, 440, 50)
+    input_rect = pygame.Rect(400, 200, 440, 50)
     input_active = False
 
     button_background = pygame.transform.scale(button_rect_image, (300, 80))
 
-    list_rect = pygame.Rect(200, 400, 400, 120)
+    list_rect = pygame.Rect(400, 400, 440, 120)
 
     while True:
         MOUSE_POS = pygame.mouse.get_pos()
-        draw_background("mathopoly/images/back.png")
+        draw_background("mathopoly/images/simple.jpg")
 
         play_back_button = pygame.image.load(
             "mathopoly/images/playBackButton.png")
@@ -222,11 +222,11 @@ def create_players():
 
         return_button.update(DISPLAY)
         settings.update(DISPLAY)
-
-        add_Player = Button(button_background, pos=(420, 330), text_input="Add Player",
+        
+        add_Player = Button(button_background, pos=(625, 330), text_input="Add Player",
                             font=get_font(28), base_color="#d7fcd4", hovering_color="White")
 
-        start_Game = Button(button_background, pos=(420, 590), text_input="Start Game",
+        start_Game = Button(button_background, pos=(625, 590), text_input="Start Game",
                             font=get_font(28), base_color="#d7fcd4", hovering_color="White")
 
         update_button(add_Player, MOUSE_POS)
@@ -288,11 +288,15 @@ def create_players():
                     pygame.mouse.set_visible(True)
                     input_active = False
 
+        pygame.draw.rect(DISPLAY, pygame.Color("beige"), input_rect)
         pygame.draw.rect(DISPLAY, pygame.Color("gray"), input_rect, 2)
+        
+        font = get_font(20)
         input_surface = font.render(player_input, True, pygame.Color("black"))
         DISPLAY.blit(input_surface, (input_rect.x + 5, input_rect.y + 5))
 
         # Draw the player list box
+        pygame.draw.rect(DISPLAY, pygame.Color("beige"), list_rect)
         pygame.draw.rect(DISPLAY, pygame.Color("gray"), list_rect, 2)
         for i, player in enumerate(players):
             player_surface = font.render(player, True, pygame.Color("black"))
