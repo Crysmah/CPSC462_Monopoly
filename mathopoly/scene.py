@@ -96,7 +96,7 @@ def setting_button():
 
         button_rect = pygame.transform.scale(button_rect_image, (300, 80))
         VOLUME_LABEL = get_font(40).render(
-            f"Volume: {int(volume * 100)}%", True, (255, 255, 255))
+            f"Volume: {int(round(volume * 100, -1))}%", True, (255, 255, 255))
         UP_BUTTON = Button(button_rect, pos=(640, 300), text_input="UP",
                            font=get_font(40), base_color="#d7fcd4", hovering_color="White")
         DOWN_BUTTON = Button(button_rect, pos=(640, 450), text_input="DOWN",
