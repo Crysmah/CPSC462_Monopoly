@@ -4,7 +4,20 @@ from mathopoly.button import Button
 import random
 import time
 
+
+# Define colors
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+# Game Variables
 total_value = 0
+player1 = {'name': 'Alice', 'balance': 1500}
+properties = {
+    0: {'name': 'Go', 'type': 'corner'},
+    1: {'name': 'Mediterranean Avenue', 'color': 'brown', 'price': 60, 'owner': 'Empty'},
+    2: {'name': 'Community Chest', 'type': 'chest'},
+    3: {'name': 'Baltic Avenue', 'color': 'brown', 'price': 60, 'owner': 'Empty'},
+    4: {'name': 'Income Tax', 'type': 'tax', 'price': 200, 'owner': 'Empty'},
+}
 
 pygame.init()
 
@@ -61,9 +74,15 @@ def play_button():
 
         scaled_build_button = pygame.transform.scale(
             button_rect_image, (150, 40))
-        roll_button = Button(scaled_build_button, pos=(600, 200), text_input="Roll", font=get_font(20),
+        roll_button = Button(scaled_build_button, pos=(500, 200), text_input="Roll", font=get_font(20),
                              base_color="#d7fcd4", hovering_color="White")
 
+        scaled_buy_button = pygame.transform.scale(
+            button_rect_image, (150, 40))
+        buy_button = Button(scaled_buy_button, pos=(700, 200), text_input="Buy", font=get_font(20),
+                            base_color="#d7fcd4", hovering_color="White")
+
+        buy_button.update(DISPLAY)
         roll_button.update(DISPLAY)
         return_button.update(DISPLAY)
         settings.update(DISPLAY)
@@ -80,6 +99,10 @@ def play_button():
                     setting_button()
                 if roll_button.checkForInput(PLAY_MOUSE_POS):
                     roll_and_update()
+                if buy_button.checkForInput(PLAY_MOUSE_POS):
+                    message = buy_property(player1, 0, properties)
+                    display_message(message)
+                    pygame.time.delay(1800)
 
         pygame.display.update()
 
@@ -308,3 +331,41 @@ def create_players():
         pygame.display.flip()
 
         pygame.display.update()
+
+
+def buy_property(player, tile_number, properties):
+    message = ""
+    if 'price' not in properties[tile_number]:
+        message = f"{properties[tile_number]['name']} square cannot be bought"
+    elif properties[tile_number]['owner'] != 'Empty':
+        message = f"{player['name']} owns this property"
+    elif properties[tile_number]['owner'] == 'Empty' and player['balance'] >= properties[tile_number]['price']:
+        player['balance'] -= properties[tile_number]['price']
+        properties[tile_number]['owner'] = player['name']
+        message = f"{player['name']} bought {properties[tile_number]['name']} for {properties[tile_number]['price']}."
+    print(message)
+    return message
+
+
+def display_message(message):
+    # Clear the screen
+    DISPLAY.fill(WHITE)
+    draw_background("mathopoly/images/playBackground.png")
+
+    # Calculate the width of the message
+    font = get_font(20)
+    message_width = font.size(message)[0]
+
+    # Create a message box
+    message_box_width = message_width + 20
+    message_box = pygame.Rect(
+        (1280 - message_box_width) / 2, (720 - 100) / 2, message_box_width, 100)
+    pygame.draw.rect(DISPLAY, BLACK, message_box, 2)
+
+    # Display the message
+    message_text = font.render(message, True, BLACK)
+    message_rect = message_text.get_rect(center=message_box.center)
+    DISPLAY.blit(message_text, message_rect)
+
+    # Update the Pygame window
+    pygame.display.update()

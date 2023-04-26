@@ -32,7 +32,7 @@ class Game():
                     sys.exit()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if PLAY_BUTTON.rect.collidepoint(MENU_MOUSE_POS):
-                        create_players()
+                        play_button()
                     if SETTING_BUTTON.rect.collidepoint(MENU_MOUSE_POS):
                         setting_button()
                     if QUIT_BUTTON.rect.collidepoint(MENU_MOUSE_POS):
