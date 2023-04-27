@@ -68,9 +68,9 @@ def play_button():
         draw_background("mathopoly/images/playBackground.png")
 
         return_button = clickable_image_buttons(
-            "mathopoly/images/playBackButton.png", (25, 25))
+            "mathopoly/images/playBackButton.png", (25, 25), 40, 40)
         settings = clickable_image_buttons(
-            "mathopoly/images/widgetButton.png", (1250, 25))
+            "mathopoly/images/widgetButton.png", (1250, 25), 40, 40)
 
         scaled_build_button = pygame.transform.scale(
             button_rect_image, (150, 40))
@@ -100,9 +100,7 @@ def play_button():
                 if roll_button.checkForInput(PLAY_MOUSE_POS):
                     roll_and_update()
                 if buy_button.checkForInput(PLAY_MOUSE_POS):
-                    message = buy_property(player1, 0, properties)
-                    display_message(message)
-                    pygame.time.delay(1800)
+                    buy_event()
 
         pygame.display.update()
 
@@ -223,9 +221,9 @@ def draw_text(text, font, color, surface, x, y):
 # Function to create the image based buttons
 
 
-def clickable_image_buttons(image_path, position):
+def clickable_image_buttons(image_path, position, width, height):
     button_image = pygame.image.load(image_path)
-    scaled_button_image = pygame.transform.scale(button_image, (40, 40))
+    scaled_button_image = pygame.transform.scale(button_image, (width, height))
     button = Button(scaled_button_image, pos=position, text_input="", font=get_font(40),
                     base_color="#d7fcd4", hovering_color="White")
     return button
@@ -248,9 +246,9 @@ def create_players():
         draw_background("mathopoly/images/back.png")
 
         return_button = clickable_image_buttons(
-            "mathopoly/images/playBackButton.png", (25, 25))
+            "mathopoly/images/playBackButton.png", (25, 25), 40, 40)
         settings = clickable_image_buttons(
-            "mathopoly/images/widgetButton.png", (1250, 25))
+            "mathopoly/images/widgetButton.png", (1250, 25), 40, 40)
 
         return_button.update(DISPLAY)
         settings.update(DISPLAY)
@@ -369,3 +367,33 @@ def display_message(message):
 
     # Update the Pygame window
     pygame.display.update()
+
+
+def buy_event():
+    while True:
+        MOUSE_POS = pygame.mouse.get_pos()
+        draw_background("mathopoly/images/playBackground.png")
+
+        yes_button = clickable_image_buttons(
+            "mathopoly/images/Yes.png", (500, 200), 80, 80)
+        no_button = clickable_image_buttons(
+            "mathopoly/images/No.png", (700, 200), 80, 80)
+
+        yes_button.update(DISPLAY)
+        no_button.update(DISPLAY)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if yes_button.checkForInput(MOUSE_POS):
+                    message = buy_property(player1, 1, properties)
+                    display_message(message)
+                    pygame.time.delay(1800)
+                    return
+
+                elif no_button.checkForInput(MOUSE_POS):
+                    return
+
+        pygame.display.update()
