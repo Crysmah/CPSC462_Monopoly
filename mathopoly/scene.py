@@ -232,8 +232,6 @@ def draw_piece(image, move):
 # TO DO
 # Properly display on screen
 # Add sound effects to rolling animation
-
-
 def create_players():
     font = pygame.font.SysFont("Comic Sans MS", 24)
 
@@ -259,16 +257,16 @@ def create_players():
 
         widget_button = pygame.image.load("mathopoly/images/widgetButton.png")
         scaled_widget_button = pygame.transform.scale(widget_button, (40, 40))
-        settings = Button(scaled_widget_button, pos=(1250, 25), text_input="", font=get_font(40),
+        settings = Button(scaled_widget_button, pos=(1375, 25), text_input="", font=get_font(40),
                           base_color="#d7fcd4", hovering_color="White")
 
         return_button.update(DISPLAY)
         settings.update(DISPLAY)
         
-        add_Player = Button(button_background, pos=(625, 330), text_input="Add Player",
+        add_Player = Button(button_background, pos=(700, 330), text_input="Add Player",
                             font=get_font(28), base_color="#d7fcd4", hovering_color="White")
 
-        start_Game = Button(button_background, pos=(625, 590), text_input="Start Game",
+        start_Game = Button(button_background, pos=(700, 590), text_input="Start Game",
                             font=get_font(28), base_color="#d7fcd4", hovering_color="White")
 
         update_button(add_Player, MOUSE_POS)
@@ -335,8 +333,8 @@ def create_players():
         
         font = get_font(20)
         input_surface = font.render(player_input, True, pygame.Color("black"))
-        DISPLAY.blit(input_surface, (input_rect.x + 5, input_rect.y + 5))
-
+        # DISPLAY.blit(input_surface, (input_rect.x + 5, input_rect.y + 5))
+        DISPLAY.blit(input_surface, (550, input_rect.y + 5))
         # Draw the player list box
         pygame.draw.rect(DISPLAY, pygame.Color("beige"), list_rect)
         pygame.draw.rect(DISPLAY, pygame.Color("gray"), list_rect, 2)
