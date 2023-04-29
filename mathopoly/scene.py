@@ -250,7 +250,119 @@ def draw_piece(image, move):
     dog_piece = pygame.image.load(image)
     dog_piece = pygame.transform.scale(dog_piece, (100, 100))
     # DISPLAY.blit(dog_piece, (190+210, 35))
-    DISPLAY.blit(dog_piece, board[move])
+
 # TO DO
 # Properly display on screen
 # Add sound effects to rolling animation
+def create_players():
+    font = pygame.font.SysFont("Comic Sans MS", 24)
+
+    players = []
+    player_input = ""
+    input_rect = pygame.Rect(200, 200, 440, 50)
+    input_active = False
+
+    button_background = pygame.transform.scale(button_rect_image, (300, 80))
+
+    list_rect = pygame.Rect(200, 400, 400, 120)
+
+    while True:
+        MOUSE_POS = pygame.mouse.get_pos()
+        draw_background("mathopoly/images/back.png")
+
+        play_back_button = pygame.image.load(
+            "mathopoly/images/playBackButton.png")
+        scaled_play_back_button = pygame.transform.scale(
+            play_back_button, (40, 40))
+        return_button = Button(scaled_play_back_button, pos=(25, 25), text_input="", font=get_font(40),
+                               base_color="#d7fcd4", hovering_color="White")
+
+        widget_button = pygame.image.load("mathopoly/images/widgetButton.png")
+        scaled_widget_button = pygame.transform.scale(widget_button, (40, 40))
+        settings = Button(scaled_widget_button, pos=(1250, 25), text_input="", font=get_font(40),
+                          base_color="#d7fcd4", hovering_color="White")
+
+        return_button.update(DISPLAY)
+        settings.update(DISPLAY)
+
+        add_Player = Button(button_background, pos=(420, 330), text_input="Add Player",
+                            font=get_font(28), base_color="#d7fcd4", hovering_color="White")
+
+        start_Game = Button(button_background, pos=(420, 590), text_input="Start Game",
+                            font=get_font(28), base_color="#d7fcd4", hovering_color="White")
+
+        update_button(add_Player, MOUSE_POS)
+        update_button(start_Game, MOUSE_POS)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+
+                if input_rect.collidepoint(event.pos):
+                    input_active = True
+                    pygame.mouse.set_visible(False)
+
+                elif add_Player.rect.collidepoint(MOUSE_POS):
+                    if player_input != "" and len(players) < 4:
+                        if player_input not in players:
+                            players.append(player_input)
+                            player_input = ""
+                        else:
+                            print("Name already exists, choose a different name")
+
+                elif return_button.checkForInput(MOUSE_POS):
+                    return
+                elif settings.checkForInput(MOUSE_POS):
+                    setting_button()
+
+                elif start_Game.rect.collidepoint(MOUSE_POS):
+                    if len(players) >= 2:
+                        play_button()
+                    else:
+                        print("Not enough players")
+
+                elif list_rect.collidepoint(event.pos):
+                    print(players)
+
+            elif event.type == pygame.KEYDOWN:
+
+                if event.key == pygame.K_BACKSPACE:
+                    player_input = player_input[:-1]
+
+                elif event.key == pygame.K_RETURN:
+                    if player_input != "" and len(players) < 4:
+                        if player_input not in players:
+                            players.append(player_input)
+                            player_input = ""
+                        else:
+                            print("Name already exists, choose a different name")
+
+                else:
+
+                    if len(player_input) < 20:
+                        player_input += event.unicode
+
+            elif event.type == pygame.MOUSEBUTTONUP:
+                if input_active:
+                    pygame.mouse.set_visible(True)
+                    input_active = False
+
+        pygame.draw.rect(DISPLAY, pygame.Color("gray"), input_rect, 2)
+        input_surface = font.render(player_input, True, pygame.Color("black"))
+        DISPLAY.blit(input_surface, (input_rect.x + 5, input_rect.y + 5))
+
+        # Draw the player list box
+        pygame.draw.rect(DISPLAY, pygame.Color("gray"), list_rect, 2)
+        for i, player in enumerate(players):
+            player_surface = font.render(player, True, pygame.Color("black"))
+            DISPLAY.blit(player_surface, (list_rect.x +
+                         5, list_rect.y + 5 + i * 25))
+
+        # Update the display
+        pygame.display.flip()
+
+        pygame.display.update()
+
