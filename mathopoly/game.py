@@ -1,6 +1,8 @@
-import pygame, sys
+import pygame
+import sys
 from mathopoly.button import Button
 from mathopoly.scene import *
+
 
 class Game():
 
@@ -14,11 +16,11 @@ class Game():
 
             button_rect = pygame.transform.scale(button_rect_image, (300, 80))
             PLAY_BUTTON = Button(button_rect, pos=(640 + 60, 220), text_input="PLAY", font=get_font(40),
-                                base_color="#d7fcd4", hovering_color="White")
+                                 base_color="#d7fcd4", hovering_color="White")
             SETTING_BUTTON = Button(button_rect, pos=(640 + 60, 350), text_input="SETTING",
                                     font=get_font(40), base_color="#d7fcd4", hovering_color="White")
             QUIT_BUTTON = Button(button_rect, pos=(640 + 60, 480), text_input="QUIT",
-                                font=get_font(40), base_color="#d7fcd4", hovering_color="White")
+                                 font=get_font(40), base_color="#d7fcd4", hovering_color="White")
 
             update_button(PLAY_BUTTON, MENU_MOUSE_POS)
             update_button(SETTING_BUTTON, MENU_MOUSE_POS)
@@ -30,7 +32,7 @@ class Game():
                     sys.exit()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if PLAY_BUTTON.rect.collidepoint(MENU_MOUSE_POS):
-                        play_button()
+                        create_players()
                     if SETTING_BUTTON.rect.collidepoint(MENU_MOUSE_POS):
                         setting_button()
                     if QUIT_BUTTON.rect.collidepoint(MENU_MOUSE_POS):
