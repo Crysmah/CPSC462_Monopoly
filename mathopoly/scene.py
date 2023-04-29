@@ -113,6 +113,24 @@ def play_button():
         roll_button = Button(scaled_build_button, pos=(640, 280), text_input="Roll", font=get_font(20),
                               base_color="#d7fcd4", hovering_color="White")
 
+        scaled_build_button = pygame.transform.scale(button_rect_image, (150, 40))
+        build_button = Button(scaled_build_button, pos=(400, 200), text_input="BUILD", font=get_font(20),
+                        base_color="#d7fcd4", hovering_color="White")
+        
+        scaled_sell_button = pygame.transform.scale(button_rect_image, (150, 40))
+        sell_button = Button(scaled_sell_button, pos=(800, 200), text_input="SELL", font=get_font(20),
+                        base_color="#d7fcd4", hovering_color="White")
+        
+        scaled_end_turn_button = pygame.transform.scale(button_rect_image, (190, 50))
+        end_turn_button = Button(scaled_end_turn_button, pos=(600, 250), text_input="END TURN", font=get_font(20),
+                        base_color="#d7fcd4", hovering_color="White")
+        
+        
+        return_button.update(DISPLAY)
+        build_button.update(DISPLAY)
+        sell_button.update(DISPLAY)
+        end_turn_button.update(DISPLAY)
+
         roll_button.update(DISPLAY)
         return_button.update(DISPLAY)
         settings.update(DISPLAY)
@@ -129,7 +147,8 @@ def play_button():
                     setting_button()
                 if roll_button.checkForInput(PLAY_MOUSE_POS):
                     roll_and_update()
-                    playerMove += dice_1
+                    # playerMove += dice_1
+                    playerMove += 1
         if playerMove >= 16:
             playerMove -= 16
         # print(playerMove)
@@ -228,6 +247,11 @@ def draw_piece(image, move):
     dog_piece = pygame.image.load(image)
     dog_piece = pygame.transform.scale(dog_piece, (100, 100))
     # DISPLAY.blit(dog_piece, (190+210, 35))
+    if playerMove >= 4 and playerMove <= 11:
+        print("")
+    else:
+        dog_piece = pygame.transform.flip(dog_piece, True, False)
+
     DISPLAY.blit(dog_piece, board[move])
 # TO DO
 # Properly display on screen
