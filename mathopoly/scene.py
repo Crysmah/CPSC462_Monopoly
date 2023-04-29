@@ -5,7 +5,8 @@ import random
 import time
 
 total_value = 0
-
+# Waiting to disappear dice
+wait = 0
 pygame.init()
 
 WIDTH, HEIGHT = 1280, 720
@@ -136,7 +137,7 @@ def play_button():
                     playerMove += total_value
         if playerMove >= 16:
             playerMove -= 16
-        print(playerMove)
+        # print(playerMove)
         draw_piece('mathopoly/images/dog.png', playerMove)
         pygame.display.update()
 
@@ -231,6 +232,12 @@ def roll_and_update():
     pygame.display.update()
 
     while True:
+        global wait
+        wait += 1
+        # print(wait)
+        if wait == 100000:
+            wait = 0
+            return
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
