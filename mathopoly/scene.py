@@ -237,12 +237,13 @@ def create_players():
 
     players = []
     player_input = ""
-    input_rect = pygame.Rect(400, 200, 440, 50)
+    # input_rect = pygame.Rect(400, 200, 440, 50)
+    input_rect = pygame.Rect(483, 200, 440, 50)
     input_active = False
 
     button_background = pygame.transform.scale(button_rect_image, (300, 80))
 
-    list_rect = pygame.Rect(400, 400, 440, 120)
+    list_rect = pygame.Rect(483, 400, 440, 120)
 
     while True:
         MOUSE_POS = pygame.mouse.get_pos()
@@ -334,14 +335,14 @@ def create_players():
         font = get_font(20)
         input_surface = font.render(player_input, True, pygame.Color("black"))
         # DISPLAY.blit(input_surface, (input_rect.x + 5, input_rect.y + 5))
-        DISPLAY.blit(input_surface, (550, input_rect.y + 5))
+        DISPLAY.blit(input_surface, (input_rect.x + 5, input_rect.y + 15))
         # Draw the player list box
         pygame.draw.rect(DISPLAY, pygame.Color("beige"), list_rect)
         pygame.draw.rect(DISPLAY, pygame.Color("gray"), list_rect, 2)
         for i, player in enumerate(players):
             player_surface = font.render(player, True, pygame.Color("black"))
             DISPLAY.blit(player_surface, (list_rect.x +
-                         5, list_rect.y + 5 + i * 25))
+                         5, list_rect.y + 15 + i * 25))
 
         # Update the display
         pygame.display.flip()
