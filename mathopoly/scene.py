@@ -3,12 +3,15 @@ from mathopoly.button import Button
 import random
 import time
 
-total_value = 0
 # Waiting to disappear dice
 wait = 0
+
+dice_1 = 0
+
 pygame.init()
 
-WIDTH, HEIGHT = 1280, 720
+# WIDTH, HEIGHT = 1280, 720
+WIDTH, HEIGHT = 1400 , 720
 DISPLAY = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Menu Screen")
 background_image = pygame.image.load("mathopoly/images/background.PNG")
@@ -91,7 +94,7 @@ def draw_background(image):
 
 # Access to the game
 def play_button():
-    global playerMove, total_value
+    global playerMove
     while True:
         PLAY_MOUSE_POS = pygame.mouse.get_pos()
         draw_background("mathopoly/images/playBackground.png")
@@ -103,7 +106,7 @@ def play_button():
 
         widget_button = pygame.image.load("mathopoly/images/widgetButton.png")
         scaled_widget_button = pygame.transform.scale(widget_button, (40, 40))
-        settings = Button(scaled_widget_button, pos=(1250, 25), text_input="", font=get_font(40),
+        settings = Button(scaled_widget_button, pos=(1375, 25), text_input="", font=get_font(40),
                         base_color="#d7fcd4", hovering_color="White")
 
         scaled_build_button = pygame.transform.scale(button_rect_image, (150, 40))
@@ -126,11 +129,12 @@ def play_button():
                     setting_button()
                 if roll_button.checkForInput(PLAY_MOUSE_POS):
                     roll_and_update()
-                    playerMove += total_value
+                    playerMove += dice_1
         if playerMove >= 16:
             playerMove -= 16
         # print(playerMove)
         draw_piece('mathopoly/images/dog.png', playerMove)
+        show_dice()
         pygame.display.update()
 
 # Changing the music and sound
@@ -143,19 +147,19 @@ def setting_button():
 
         button_rect = pygame.transform.scale(button_rect_image, (300, 80))
         VOLUME_LABEL = get_font(40).render(f"Volume: {int(volume * 100)}%", True, (255, 255, 255))
-        UP_BUTTON = Button(button_rect, pos=(640, 300), text_input="UP",
+        UP_BUTTON = Button(button_rect, pos=(640 + 60, 300), text_input="UP",
                            font=get_font(40), base_color="#d7fcd4", hovering_color="White")
-        DOWN_BUTTON = Button(button_rect, pos=(640, 450), text_input="DOWN",
+        DOWN_BUTTON = Button(button_rect, pos=(640 + 60, 450), text_input="DOWN",
                              font=get_font(40), base_color="#d7fcd4", hovering_color="White")
-        BACK_BUTTON = Button(button_rect, pos=(640, 600), text_input="BACK",
+        BACK_BUTTON = Button(button_rect, pos=(640 + 60, 600), text_input="BACK",
                              font=get_font(40), base_color="#d7fcd4", hovering_color="White")
 
         update_button(UP_BUTTON, MENU_MOUSE_POS)
         update_button(DOWN_BUTTON, MENU_MOUSE_POS)
         update_button(BACK_BUTTON, MENU_MOUSE_POS)
 
-        DISPLAY.blit(VOLUME_LABEL, (640 - VOLUME_LABEL.get_width() // 2, 150))
-
+        # DISPLAY.blit(VOLUME_LABEL, (640 - VOLUME_LABEL.get_width() // 2, 150))
+        DISPLAY.blit(VOLUME_LABEL, (500, 150))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -190,49 +194,28 @@ def roll_dice():
     return roll
 
 def roll_and_update():
-    global total_value
-    draw_piece('mathopoly/images/dog.png', playerMove)
+    global dice_1
     for i in range(10):
         dice1_image = random.choice(dice_images)
-        dice1_image = pygame.transform.scale(dice1_image, (100,100))
-        dice2_image = random.choice(dice_images)
-        dice2_image = pygame.transform.scale(dice2_image, (100, 100))
-        DISPLAY.blit(dice1_image, (540, 310))
-        DISPLAY.blit(dice2_image, (640, 310))
+        dice1_image = pygame.transform.scale(dice1_image, (100, 100))
+        DISPLAY.blit(dice1_image, (590, 320))
         pygame.display.update()
         time.sleep(0.1)
 
-
     roll1 = roll_dice()
-    roll2 = roll_dice()
 
-    total_value = roll1 + roll2
-    print(f"Total: {total_value}")
+    dice_1 = roll1
 
-    dice1_image = dice_images[roll1-1]
-    dice1_image = pygame.transform.scale(dice1_image, (100,100))
+    dice_1 = roll1 
+    print(f"Total: {dice_1}")
 
-    dice2_image = dice_images[roll2-1]
-    dice2_image = pygame.transform.scale(dice2_image,(100,100))
 
-    DISPLAY.blit(dice1_image,(540,310))
-    DISPLAY.blit(dice2_image,(640,310))
-    pygame.display.update()
+def show_dice():
+    dice1_image = dice_images[dice_1-1]
+    dice1_image = pygame.transform.scale(dice1_image, (100, 100))
 
-    while True:
-        global wait
-        wait += 1
-        # print(wait)
-        if wait == 100000:
-            wait = 0
-            return
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                return 
-
+    DISPLAY.blit(dice1_image, (590, 320))
+    
 def draw_board():
     background_image = pygame.image.load('mathopoly/images/board.PNG')
     background_image = pygame.transform.scale(background_image, (1000, 700))

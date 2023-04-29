@@ -13,11 +13,11 @@ class Game():
             MENU_MOUSE_POS = pygame.mouse.get_pos()
 
             button_rect = pygame.transform.scale(button_rect_image, (300, 80))
-            PLAY_BUTTON = Button(button_rect, pos=(640, 220), text_input="PLAY", font=get_font(40),
+            PLAY_BUTTON = Button(button_rect, pos=(640 + 60, 220), text_input="PLAY", font=get_font(40),
                                 base_color="#d7fcd4", hovering_color="White")
-            SETTING_BUTTON = Button(button_rect, pos=(640, 350), text_input="SETTING",
+            SETTING_BUTTON = Button(button_rect, pos=(640 + 60, 350), text_input="SETTING",
                                     font=get_font(40), base_color="#d7fcd4", hovering_color="White")
-            QUIT_BUTTON = Button(button_rect, pos=(640, 480), text_input="QUIT",
+            QUIT_BUTTON = Button(button_rect, pos=(640 + 60, 480), text_input="QUIT",
                                 font=get_font(40), base_color="#d7fcd4", hovering_color="White")
 
             update_button(PLAY_BUTTON, MENU_MOUSE_POS)
