@@ -65,7 +65,7 @@ board = {
     15 : (190, 170)
 }
 
-one = 0
+playerMove = 0
 
 def get_font(size):  # Returns Press-Start-2P in the desired size
     return pygame.font.Font("mathopoly/images/font.ttf", size)
@@ -98,8 +98,8 @@ def draw_background(image):
 
 
 def play_button():
+    global playerMove, total_value
     while True:
-        global one
         PLAY_MOUSE_POS = pygame.mouse.get_pos()
         draw_background("mathopoly/images/playBackground.png")
         play_back_button = pygame.image.load("mathopoly/images/playBackButton.png")
@@ -133,8 +133,11 @@ def play_button():
                     setting_button()
                 if roll_button.checkForInput(PLAY_MOUSE_POS):
                     roll_and_update()
-        draw_piece('mathopoly/images/dog.png', one)
-        one = one + 1
+                    playerMove += total_value
+        if playerMove >= 16:
+            playerMove -= 16
+        print(playerMove)
+        draw_piece('mathopoly/images/dog.png', playerMove)
         pygame.display.update()
 
 # Changing the music and sound
@@ -198,6 +201,8 @@ def roll_dice():
     return roll
 
 def roll_and_update():
+    global total_value
+    draw_piece('mathopoly/images/dog.png', playerMove)
     for i in range(10):
         dice1_image = random.choice(dice_images)
         dice1_image = pygame.transform.scale(dice1_image, (100,100))
@@ -231,7 +236,7 @@ def roll_and_update():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                return
+                return 
 
 def draw_board():
     background_image = pygame.image.load('mathopoly/images/board.PNG')
