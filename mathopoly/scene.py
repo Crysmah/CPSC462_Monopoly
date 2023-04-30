@@ -30,17 +30,6 @@ dice_images = [pygame.image.load('mathopoly/images/dice_one.png'), pygame.image.
 # Square size
 size = 140
 
-new_board = [
-    # Top
-    (190, 35), (400, 35), (600, 35), (790, 35), (990, 35),
-    # Left
-    (190, 170), (190, 315), (190, 460),
-    # Right
-    (990, 170), (990, 315), (990, 460),
-    # Bottom
-    (190, 590), (400, 590), (600, 590), (790, 590), (990, 590)
-]
-
 board = {
     # START to top right
     0 : (190, 35),
@@ -148,7 +137,7 @@ def play_button():
                 if roll_button.checkForInput(PLAY_MOUSE_POS):
                     roll_and_update()
                     # playerMove += dice_1
-                    playerMove += 1
+                    playerMove += dice_1
         if playerMove >= 16:
             playerMove -= 16
         # print(playerMove)
@@ -225,7 +214,6 @@ def roll_and_update():
 
     dice_1 = roll1
 
-    dice_1 = roll1 
     print(f"Total: {dice_1}")
 
 
