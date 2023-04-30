@@ -56,6 +56,25 @@ board = {
     15 : (190, 170)
 }
 
+properties = {
+    0  : {'pos': (155, 35),  'name' :'Go!!',           'owner' : '', 'price' : 0},
+    1  : {'pos': (360, 35),  'name' :'Carl\'s Jr',      'owner' : '', 'price' : 0},
+    2  : {'pos': (560, 35),  'name' :'Bookstore',      'owner' : '', 'price' : 0},
+    3  : {'pos': (760, 35),  'name' :'Titan House',    'owner' : '', 'price' : 0},
+    4  : {'pos': (950, 35),  'name' :'Visit to Jail',  'owner' : '', 'price' : 0},
+    5  : {'pos': (950, 170), 'name' :'ECS Building',   'owner' : '', 'price' : 0},
+    6  : {'pos': (950, 315), 'name' :'Visual Art',     'owner' : '', 'price' : 0},
+    7  : {'pos': (950, 460), 'name' :'Gymnasium',      'owner' : '', 'price' : 0},
+    8  : {'pos': (950, 590), 'name' :'Free Parking',   'owner' : '', 'price' : 0},
+    9  : {'pos': (760, 590), 'name' :'Mystery Box',    'owner' : '', 'price' : 0},
+    10 : {'pos': (555, 590), 'name' :'Titan Stadium',  'owner' : '', 'price' : 0},
+    11 : {'pos': (360, 590), 'name' :'Titan Union',    'owner' : '', 'price' : 0},
+    12 : {'pos': (155, 590), 'name' :'Visit to Jail',  'owner' : '', 'price' : 0},
+    13 : {'pos': (150, 460), 'name' :'Pollak Library', 'owner' : '', 'price' : 0},
+    14 : {'pos': (155, 315), 'name' :'Electric Co',    'owner' : '', 'price' : 0},
+    15 : {'pos': (155, 170), 'name' :'Mihaylo Hall',   'owner' : '', 'price' : 0}
+}
+
 playerMove = 0
 
 def get_font(size): # Returns Press-Start-2P in the desired size
@@ -89,6 +108,7 @@ def play_button():
         draw_background("mathopoly/images/playBackground.png")
         play_back_button = pygame.image.load("mathopoly/images/playBackButton.png")
         draw_board()
+        text_properties()
         scaled_play_back_button = pygame.transform.scale(play_back_button, (40, 40))
         return_button = Button(scaled_play_back_button, pos=(25, 25), text_input="", font=get_font(40),
                             base_color="#d7fcd4", hovering_color="White")
@@ -360,3 +380,10 @@ def create_players():
         pygame.display.flip()
 
         pygame.display.update()
+
+def text_properties():
+    font = pygame.font.SysFont(None, 40)
+    for index in properties:
+        text = font.render(properties[index]['name'], True, (0, 0, 0))
+        pos = properties[index]['pos']
+        DISPLAY.blit(text, pos)
