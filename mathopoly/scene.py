@@ -21,6 +21,26 @@ button_rect_image = image=pygame.image.load("mathopoly/images/Button Rect.png")
 dice_images = [pygame.image.load('mathopoly/images/dice_one.png'), pygame.image.load('mathopoly/images/dice_two.png'), pygame.image.load('mathopoly/images/dice_three.png'),
                pygame.image.load('mathopoly/images/dice_four.png'), pygame.image.load('mathopoly/images/dice_five.png'), pygame.image.load('mathopoly/images/dice_six.png')]
 
+# math variables
+USER_ANSWER = ""
+MESSAGE = ""
+
+# Set the font for the text
+FONT_SIZE = 32
+FONT_COLOR = (0, 0, 0)
+font = pygame.font.Font(None, FONT_SIZE)
+
+# Set the colors
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+GRAY = (128, 128, 128)
+
+num1 = 0
+num2 = 0
+
+question = ""
+
+operator = ""
 
 # Board coordinates 
 # board =  [
@@ -137,6 +157,7 @@ def play_button():
                 if roll_button.checkForInput(PLAY_MOUSE_POS):
                     roll_and_update()
                     playerMove += dice_1
+                    pygame.time.delay(2000)
                     # the math problems go here
                     MathQuiz().run()
                     
@@ -248,7 +269,6 @@ def create_players():
 
     players = []
     player_input = ""
-    # input_rect = pygame.Rect(400, 200, 440, 50)
     input_rect = pygame.Rect(483, 200, 440, 50)
     input_active = False
 
@@ -359,3 +379,65 @@ def create_players():
         pygame.display.flip()
 
         pygame.display.update()
+        
+# def generate_question():
+#     global num1, num2, question, operator
+#     num1 = random.randint(1, 10)
+#     num2 = random.randint(1, 10)
+#     operator = random.choice(['+', '-', '*', '/'])
+    
+#     if operator == '+':
+#         answer = num1 + num2
+#     elif operator == '-':
+#         answer = num1 - num2
+#     elif operator == '*':
+#         answer = num1 * num2
+#     elif operator == '/':
+#         answer = num1 / num2
+#     question = f"What is {num1} {operator} {num2}?"
+
+# def generating_math():
+#     global MESSAGE, USER_ANSWER
+#     input_box = pygame.Rect(483, 200, 440, 50)
+    
+    
+#     while True:
+#         # Draw the question
+#         question_text = font.render(question, True, FONT_COLOR)
+#         question_rect = question_text.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 50))
+#         DISPLAY.blit(question_text, question_rect)
+
+#         # Draw the text box
+#         pygame.draw.rect(DISPLAY, GRAY, input_box, 2)
+#         answer_text = font.render(USER_ANSWER, True, FONT_COLOR)
+#         answer_rect = answer_text.get_rect(center=input_box.center)
+#         DISPLAY.blit(answer_text, answer_rect)
+
+#         # Draw the message
+#         message_text = font.render(MESSAGE, True, FONT_COLOR)
+#         message_rect = message_text.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 100))
+#         DISPLAY.blit(message_text, message_rect)
+        
+#         # Handle events
+#         for event in pygame.event.get():
+#             if event.type == pygame.QUIT:
+#                 pygame.quit()
+#                 quit()
+#             if event.type == pygame.KEYDOWN:
+#                 if event.key == pygame.K_RETURN:
+#                     # Check the user's answer
+#                     try:
+#                         if float(USER_ANSWER) == answer:
+#                             MESSAGE = "Correct!"
+#                         else:
+#                             MESSAGE = "Incorrect."
+#                     except ValueError:
+#                         MESSAGE = "Please enter a number."
+                    
+#                     # Generate a new math question
+#                     generate_question()
+#                     USER_ANSWER = ""
+
+#                 else:
+#                     # Add the pressed key to the user's answer
+#                     USER_ANSWER += event.unicode

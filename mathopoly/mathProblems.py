@@ -74,7 +74,7 @@ class MathQuiz:
                     self.user_answer += event.unicode
 
     def draw(self):
-        DISPLAY.blit(background_image, (0,0))
+        DISPLAY.fill(WHITE)
         # Draw the question
         question_text = font.render(self.question, True, FONT_COLOR)
         question_rect = question_text.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 50))
