@@ -12,6 +12,8 @@ count = 0
 
 roll = True
 
+load_dice_image = 0
+
 pygame.init()
 
 # WIDTH, HEIGHT = 1280, 720
@@ -250,7 +252,7 @@ def roll_dice():
     return roll
 
 def roll_and_update():
-    global dice_1, count
+    global dice_1, count, load_dice_image
     for i in range(10):
         dice1_image = random.choice(dice_images)
         dice1_image = pygame.transform.scale(dice1_image, (100, 100))
@@ -259,6 +261,7 @@ def roll_and_update():
         time.sleep(0.1)
 
     roll1 = roll_dice()
+    load_dice_image = roll1
 
     dice_1 = player_list[count]['position']
     dice_1 += roll1
@@ -292,7 +295,7 @@ def end_turn_message(player):
 
 
 def show_dice():
-    dice1_image = dice_images[dice_1-1]
+    dice1_image = dice_images[load_dice_image-1]
     dice1_image = pygame.transform.scale(dice1_image, (100, 100))
 
     DISPLAY.blit(dice1_image, (590, 320))
