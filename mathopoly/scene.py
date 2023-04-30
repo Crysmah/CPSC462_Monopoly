@@ -8,6 +8,10 @@ wait = 0
 
 dice_1 = 0
 
+count = 0
+
+roll = True
+
 pygame.init()
 
 # WIDTH, HEIGHT = 1280, 720
@@ -28,6 +32,19 @@ dice_images = [pygame.image.load('mathopoly/images/dice_one.png'), pygame.image.
 #     (285, 573), (425, 573), (565, 573), (705, 573), (845, 573)
 # ]
 # Square size
+
+dog_piece = pygame.image.load('mathopoly/images/dog.png')
+dog_piece = pygame.transform.scale(dog_piece, (100, 100))
+
+player1 = {'name': 'Alice', 'balance': 1500, 'position': 0, 'piece': dog_piece}
+player2 = {'name': 'Lux', 'balance': 1500, 'position': 0, 'piece': dog_piece}
+
+
+player_list = []
+player_list.append(player1)
+player_list.append(player2)
+
+
 size = 140
 
 board = {
@@ -102,8 +119,9 @@ def draw_background(image):
 
 # Access to the game
 def play_button():
-    global playerMove
+    global playerMove, count, dog_piece, roll
     while True:
+
         PLAY_MOUSE_POS = pygame.mouse.get_pos()
         draw_background("mathopoly/images/playBackground.png")
         play_back_button = pygame.image.load("mathopoly/images/playBackButton.png")
@@ -131,19 +149,22 @@ def play_button():
                         base_color="#d7fcd4", hovering_color="White")
         
         scaled_end_turn_button = pygame.transform.scale(button_rect_image, (190, 50))
-        end_turn_button = Button(scaled_end_turn_button, pos=(600, 250), text_input="END TURN", font=get_font(20),
+        end_turn_button = Button(scaled_end_turn_button, pos=(640, 470), text_input="END TURN", font=get_font(20),
                         base_color="#d7fcd4", hovering_color="White")
         
         
         return_button.update(DISPLAY)
-        build_button.update(DISPLAY)
-        sell_button.update(DISPLAY)
+        # build_button.update(DISPLAY)
+        # sell_button.update(DISPLAY)
         end_turn_button.update(DISPLAY)
 
         roll_button.update(DISPLAY)
         return_button.update(DISPLAY)
         settings.update(DISPLAY)
         #DISPLAY.blit(scaled_play_back_button, (10,10))
+
+        if count >= len(player_list):
+            count = 0
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -154,14 +175,21 @@ def play_button():
                     return
                 if settings.checkForInput(PLAY_MOUSE_POS):
                     setting_button()
-                if roll_button.checkForInput(PLAY_MOUSE_POS):
-                    roll_and_update()
-                    # playerMove += dice_1
-                    playerMove += dice_1
+                if roll == False:
+                    if end_turn_button.checkForInput(PLAY_MOUSE_POS):
+                        end_turn_message(player_list[count])
+                        roll = True
+                if roll:
+                    if roll_button.checkForInput(PLAY_MOUSE_POS):
+                        roll_and_update()
+                        count += 1
+                        roll = False
+
         if playerMove >= 16:
             playerMove -= 16
         # print(playerMove)
-        draw_piece('mathopoly/images/dog.png', playerMove)
+        draw_piece(player1)
+        draw_piece(player2)
         show_dice()
         pygame.display.update()
 
@@ -222,7 +250,7 @@ def roll_dice():
     return roll
 
 def roll_and_update():
-    global dice_1
+    global dice_1, count
     for i in range(10):
         dice1_image = random.choice(dice_images)
         dice1_image = pygame.transform.scale(dice1_image, (100, 100))
@@ -232,9 +260,35 @@ def roll_and_update():
 
     roll1 = roll_dice()
 
-    dice_1 = roll1
+    dice_1 = player_list[count]['position']
+    dice_1 += roll1
+
+    if dice_1 >= len(board):
+        dice_1 = dice_1 - 16
+
+    # Position 13
+    # Rolls 6
+    # Position 19
+    # 19 - 16 - 1
+
+    player_list[count]['position'] = dice_1
+    playerMove = dice_1
+
+    print(dice_1)
 
     print(f"Total: {dice_1}")
+
+
+def end_turn_message(player):
+    font = pygame.font.Font(None, 30)
+    text = font.render(
+        f"End of Turn: {player['name']}", True, (255, 255, 255))
+    text_rect = text.get_rect(center=(WIDTH / 2, HEIGHT - 50))
+    DISPLAY.blit(text, text_rect)
+    draw_piece(player1)
+    draw_piece(player2)
+    pygame.display.update()
+    pygame.time.delay(2000)
 
 
 def show_dice():
@@ -251,16 +305,15 @@ def draw_board():
     # for i in range(20):
     #     pygame.draw.rect(DISPLAY, (120,120,120) , [board[i][0], board[i][1], size, size], 1)
 
-def draw_piece(image, move):
-    dog_piece = pygame.image.load(image)
-    dog_piece = pygame.transform.scale(dog_piece, (100, 100))
+def draw_piece(player):
+    global dog_piece
     # DISPLAY.blit(dog_piece, (190+210, 35))
     if playerMove >= 4 and playerMove <= 11:
         print("")
     else:
         dog_piece = pygame.transform.flip(dog_piece, True, False)
 
-    DISPLAY.blit(dog_piece, board[move])
+    DISPLAY.blit(dog_piece, board[player['position']])
 # TO DO
 # Properly display on screen
 # Add sound effects to rolling animation
