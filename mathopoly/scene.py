@@ -2,9 +2,7 @@ import pygame, sys
 from mathopoly.button import Button
 import random
 import time
-
-# Waiting to disappear dice
-wait = 0
+from pygame.locals import *
 
 dice_1 = 0
 
@@ -58,7 +56,7 @@ board = {
 
 properties = {
     0  : {'pos': (155, 35),  'name' :'Go!!',           'owner' : '', 'price' : 0},
-    1  : {'pos': (360, 35),  'name' :'Carl\'s Jr',      'owner' : '', 'price' : 0},
+    1  : {'pos': (360, 35),  'name' :'Carl\'s Jr',     'owner' : '', 'price' : 0},
     2  : {'pos': (560, 35),  'name' :'Bookstore',      'owner' : '', 'price' : 0},
     3  : {'pos': (760, 35),  'name' :'Titan House',    'owner' : '', 'price' : 0},
     4  : {'pos': (950, 35),  'name' :'Visit to Jail',  'owner' : '', 'price' : 0},
@@ -76,6 +74,11 @@ properties = {
 }
 
 playerMove = 0
+
+x = 0
+y = 0
+userInput = ''
+solveMath = False
 
 def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("mathopoly/images/font.ttf", size)
@@ -102,7 +105,8 @@ def draw_background(image):
 
 # Access to the game
 def play_button():
-    global playerMove
+    global playerMove, x , y, userInput, solveMath
+    font = pygame.font.Font(None, 50)
     while True:
         PLAY_MOUSE_POS = pygame.mouse.get_pos()
         draw_background("mathopoly/images/playBackground.png")
@@ -156,8 +160,36 @@ def play_button():
                     setting_button()
                 if roll_button.checkForInput(PLAY_MOUSE_POS):
                     roll_and_update()
-                    # playerMove += dice_1
                     playerMove += dice_1
+                    solveMath = True
+                    x = random.randint(1, 10)
+                    y = random.randint(1, 10)
+            if solveMath == True and event.type == KEYDOWN:
+                if event.unicode.isnumeric():
+                    userInput += event.unicode
+                elif event.key == K_BACKSLASH:
+                    userInput = userInput[:-1]
+                elif event.key == K_RETURN:
+                    if x + y == int(userInput):
+                        print('Correct')
+                    else:
+                        print('Wrong')
+                    userInput = ''
+                    solveMath = False
+        
+        if solveMath == True:
+            xShow = font.render("{0} + {1}".format(x, y), True, (255, 255, 255))
+            block = font.render(userInput, True, (255, 255, 255))
+
+            xRect = xShow.get_rect()
+
+            rect = block.get_rect()
+            rect.center = DISPLAY.get_rect().center
+            xRect.center = (100,200)
+
+            DISPLAY.blit(block, rect)
+            DISPLAY.blit(xShow, xRect)
+
         if playerMove >= 16:
             playerMove -= 16
         # print(playerMove)
@@ -387,3 +419,45 @@ def text_properties():
         text = font.render(properties[index]['name'], True, (0, 0, 0))
         pos = properties[index]['pos']
         DISPLAY.blit(text, pos)
+
+def mathProblems():
+    global x, y
+    x = random.randint(0 ,10)
+    y = random.randint(0, 10)
+    font = pygame.font.Font(None, 50)
+    userInput = ''
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == KEYDOWN:
+                if event.unicode.isnumeric():
+                    userInput += event.unicode
+                elif event.key == K_BACKSPACE:
+                    userInput = userInput[:-1]
+                elif event.key == K_RETURN:
+                    if x + y == int(userInput):
+                         print('Correct!')
+                    else:
+                         print('Wrong')
+                    userInput = ''
+                    x = random.randint(0,10)
+                    y = random.randint(0,10)
+                elif event.type == QUIT:
+                    return
+        # DISPLAY.blit(background, (0,0))
+        xShow = font.render("{0} + {1}".format(x, y), True, (255, 255, 255))
+        block = font.render(userInput, True, (255, 255, 255))
+
+        xRect = xShow.get_rect()
+
+        rect = block.get_rect()
+        rect.center = DISPLAY.get_rect().center
+        xRect.center = (100,200)
+
+        xCopy = xShow.copy()
+        blockCopy = block.copy()
+        
+        DISPLAY.blit(block, rect)
+        DISPLAY.blit(xShow, xRect)
+
+        pygame.display.flip()
