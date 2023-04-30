@@ -166,7 +166,6 @@ def play_button():
         # build_button.update(DISPLAY)
         # sell_button.update(DISPLAY)
         end_turn_button.update(DISPLAY)
-
         roll_button.update(DISPLAY)
         return_button.update(DISPLAY)
         settings.update(DISPLAY)
@@ -175,6 +174,7 @@ def play_button():
         if count >= len(player_list):
             count = 0
 
+        '''Check everything in here'''
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -185,7 +185,7 @@ def play_button():
                 if settings.checkForInput(PLAY_MOUSE_POS):
                     setting_button()
                 if roll == False:
-                    if end_turn_button.checkForInput(PLAY_MOUSE_POS):
+                    if end_turn_button.checkForInput(PLAY_MOUSE_POS) and solveMath == False:
                         end_turn_message(player_list[count])
                         roll = True
                 if roll:
@@ -196,6 +196,8 @@ def play_button():
                         solveMath = True
                         x = random.randint(1, 10)
                         y = random.randint(1, 10)
+
+            # Takes key inputs when a problem is present
             if solveMath == True and event.type == KEYDOWN:
                 if event.unicode.isnumeric():
                     userInput += event.unicode
@@ -209,18 +211,21 @@ def play_button():
                     userInput = ''
                     solveMath = False
 
-        if solveMath == True:           
-            xShow = font.render("{0} + {1}".format(x, y), True, (255, 255, 255))
-            block = font.render(userInput, True, (255, 255, 255))
+        # Displays only when the roll button is pressed
+        if solveMath == True:       
+            mathProblem = font.render("{0} + {1}".format(x, y), True, (0, 0, 0))
+            block = font.render(userInput, True, (0, 0, 0))
 
-            xRect = xShow.get_rect()
-
+            xRect = mathProblem.get_rect()
             rect = block.get_rect()
-            rect.center = DISPLAY.get_rect().center
-            xRect.center = (100,200)
-            
+            # rect.center = DISPLAY.get_rect().center
+            rect.center = (700, 500)
+            xRect.center = (700,300)
+
             DISPLAY.blit(block, rect)
-            DISPLAY.blit(xShow, xRect)
+            DISPLAY.blit(mathProblem, xRect)
+
+        '''End of solveMath'''
 
         if playerMove >= 16:
             playerMove -= 16
@@ -480,42 +485,3 @@ def text_properties():
         text = font.render(properties[index]['name'], True, (0, 0, 0))
         pos = properties[index]['pos']
         DISPLAY.blit(text, pos)
-
-def mathProblems():
-    global x, y
-    x = random.randint(0 ,10)
-    y = random.randint(0, 10)
-    font = pygame.font.Font(None, 50)
-    userInput = ''
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == KEYDOWN:
-                if event.unicode.isnumeric():
-                    userInput += event.unicode
-                elif event.key == K_BACKSPACE:
-                    userInput = userInput[:-1]
-                elif event.key == K_RETURN:
-                    if x + y == int(userInput):
-                         print('Correct!')
-                    else:
-                         print('Wrong')
-                    userInput = ''
-                    x = random.randint(0,10)
-                    y = random.randint(0,10)
-                elif event.type == QUIT:
-                    return
-        # DISPLAY.blit(background, (0,0))
-        xShow = font.render("{0} + {1}".format(x, y), True, (255, 255, 255))
-        block = font.render(userInput, True, (255, 255, 255))
-
-        xRect = xShow.get_rect()
-
-        rect = block.get_rect()
-        rect.center = DISPLAY.get_rect().center
-        xRect.center = (100,200)
-        
-        DISPLAY.blit(block, rect)
-        DISPLAY.blit(xShow, xRect)
-
-        pygame.display.flip()
