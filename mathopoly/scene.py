@@ -1,5 +1,6 @@
 import pygame, sys
 from mathopoly.button import Button
+from mathopoly.mathProblems import MathQuiz
 import random
 import time
 
@@ -19,6 +20,7 @@ button_rect_image = image=pygame.image.load("mathopoly/images/Button Rect.png")
 
 dice_images = [pygame.image.load('mathopoly/images/dice_one.png'), pygame.image.load('mathopoly/images/dice_two.png'), pygame.image.load('mathopoly/images/dice_three.png'),
                pygame.image.load('mathopoly/images/dice_four.png'), pygame.image.load('mathopoly/images/dice_five.png'), pygame.image.load('mathopoly/images/dice_six.png')]
+
 
 # Board coordinates 
 # board =  [
@@ -98,25 +100,30 @@ def play_button():
     while True:
         PLAY_MOUSE_POS = pygame.mouse.get_pos()
         draw_background("mathopoly/images/playBackground.png")
+        # back button
         play_back_button = pygame.image.load("mathopoly/images/playBackButton.png")
+        # draws the board on the screen
         draw_board()
         scaled_play_back_button = pygame.transform.scale(play_back_button, (40, 40))
         return_button = Button(scaled_play_back_button, pos=(25, 25), text_input="", font=get_font(40),
                             base_color="#d7fcd4", hovering_color="White")
 
+        # widget button
         widget_button = pygame.image.load("mathopoly/images/widgetButton.png")
         scaled_widget_button = pygame.transform.scale(widget_button, (40, 40))
         settings = Button(scaled_widget_button, pos=(1375, 25), text_input="", font=get_font(40),
                         base_color="#d7fcd4", hovering_color="White")
 
+        # roll button
         scaled_build_button = pygame.transform.scale(button_rect_image, (150, 40))
         roll_button = Button(scaled_build_button, pos=(640, 280), text_input="Roll", font=get_font(20),
                               base_color="#d7fcd4", hovering_color="White")
-
+        
+        # updating the buttons to display
         roll_button.update(DISPLAY)
         return_button.update(DISPLAY)
         settings.update(DISPLAY)
-        #DISPLAY.blit(scaled_play_back_button, (10,10))
+        
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -130,6 +137,9 @@ def play_button():
                 if roll_button.checkForInput(PLAY_MOUSE_POS):
                     roll_and_update()
                     playerMove += dice_1
+                    # the math problems go here
+                    MathQuiz().run()
+                    
         if playerMove >= 16:
             playerMove -= 16
         # print(playerMove)
@@ -229,6 +239,7 @@ def draw_piece(image, move):
     dog_piece = pygame.transform.scale(dog_piece, (100, 100))
     # DISPLAY.blit(dog_piece, (190+210, 35))
     DISPLAY.blit(dog_piece, board[move])
+
 # TO DO
 # Properly display on screen
 # Add sound effects to rolling animation
