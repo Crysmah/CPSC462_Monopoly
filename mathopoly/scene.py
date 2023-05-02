@@ -35,6 +35,9 @@ dice_images = [pygame.image.load('mathopoly/images/dice_one.png'), pygame.image.
 # ]
 # Square size
 
+WHITE = ((255, 255, 255))
+BLACK = ((0, 0, 0))
+
 dog_piece = pygame.image.load('mathopoly/images/dog.png')
 dog_piece = pygame.transform.scale(dog_piece, (100, 100))
 
@@ -79,19 +82,19 @@ board = {
 }
 
 properties = {
-    0: {'pos': (155, 35),  'name': 'Go!!',           'owner': '', 'price': 0},
+    0: {'pos': (155, 35),  'name': 'Go!!',           'owner': ''},
     1: {'pos': (360, 35),  'name': 'Carl\'s Jr',     'owner': '', 'price': 0},
     2: {'pos': (560, 35),  'name': 'Bookstore',      'owner': '', 'price': 0},
     3: {'pos': (760, 35),  'name': 'Titan House',    'owner': '', 'price': 0},
-    4: {'pos': (950, 35),  'name': 'Visit to Jail',  'owner': '', 'price': 0},
+    4: {'pos': (950, 35),  'name': 'Visit to Jail',  'owner': ''},
     5: {'pos': (950, 170), 'name': 'ECS Building',   'owner': '', 'price': 0},
     6: {'pos': (950, 315), 'name': 'Visual Art',     'owner': '', 'price': 0},
     7: {'pos': (950, 460), 'name': 'Gymnasium',      'owner': '', 'price': 0},
-    8: {'pos': (950, 590), 'name': 'Free Parking',   'owner': '', 'price': 0},
-    9: {'pos': (760, 590), 'name': 'Mystery Box',    'owner': '', 'price': 0},
+    8: {'pos': (950, 590), 'name': 'Free Parking',   'owner': ''},
+    9: {'pos': (760, 590), 'name': 'Mystery Box',    'owner': ''},
     10: {'pos': (555, 590), 'name': 'Titan Stadium',  'owner': '', 'price': 0},
     11: {'pos': (360, 590), 'name': 'Titan Union',    'owner': '', 'price': 0},
-    12: {'pos': (155, 590), 'name': 'Visit to Jail',  'owner': '', 'price': 0},
+    12: {'pos': (155, 590), 'name': 'Visit to Jail',  'owner': ''},
     13: {'pos': (150, 460), 'name': 'Pollak Library', 'owner': '', 'price': 0},
     14: {'pos': (155, 315), 'name': 'Electric Co',    'owner': '', 'price': 0},
     15: {'pos': (155, 170), 'name': 'Mihaylo Hall',   'owner': '', 'price': 0}
@@ -176,6 +179,12 @@ def play_button():
         end_turn_button = Button(scaled_end_turn_button, pos=(640, 470), text_input="END TURN", font=get_font(20),
                                  base_color="#d7fcd4", hovering_color="White")
 
+        scaled_end_turn_button = pygame.transform.scale(
+            button_rect_image, (190, 50))
+        buy_button = Button(scaled_end_turn_button, pos=(820, 370), text_input="Buy", font=get_font(20),
+                            base_color="#d7fcd4", hovering_color="White")
+
+        buy_button.update(DISPLAY)
         return_button.update(DISPLAY)
         # build_button.update(DISPLAY)
         # sell_button.update(DISPLAY)
@@ -201,15 +210,17 @@ def play_button():
                 if roll == False:
                     if end_turn_button.checkForInput(PLAY_MOUSE_POS) and solveMath == False:
                         end_turn_message(player_list[count])
+                        count += 1
                         roll = True
                 if roll:
                     if roll_button.checkForInput(PLAY_MOUSE_POS):
                         roll_and_update()
-                        count += 1
                         roll = False
                         solveMath = True
                         x = random.randint(1, 10)
                         y = random.randint(1, 10)
+                if buy_button.checkForInput(PLAY_MOUSE_POS):
+                    buy_event()
 
             # Takes key inputs when a problem is present
             if solveMath == True and event.type == KEYDOWN:
@@ -329,6 +340,7 @@ def roll_and_update():
     load_dice_image = roll1
 
     dice_1 = player_list[count]['position']
+    print(player_list[count]['position'])
     dice_1 += roll1
 
     if dice_1 >= len(board):
@@ -511,9 +523,9 @@ def buy_property(player, tile_number, properties):
     message = ""
     if 'price' not in properties[tile_number]:
         message = f"{properties[tile_number]['name']} square cannot be bought"
-    elif properties[tile_number]['owner'] != 'Empty':
+    elif properties[tile_number]['owner'] != '':
         message = f"{player['name']} owns this property"
-    elif properties[tile_number]['owner'] == 'Empty' and player['balance'] >= properties[tile_number]['price']:
+    elif properties[tile_number]['owner'] == '' and player['balance'] >= properties[tile_number]['price']:
         player['balance'] -= properties[tile_number]['price']
         properties[tile_number]['owner'] = player['name']
         message = f"{player['name']} bought {properties[tile_number]['name']} for {properties[tile_number]['price']}."
@@ -545,33 +557,43 @@ def display_message(message):
     pygame.display.update()
 
 
+def create_button(image, w, h, x, y):
+    # Load and scale image
+    button_image = pygame.image.load(image)
+    button_image = pygame.transform.scale(button_image, (w, h))
+    # Create and center button rectangle
+    button_rect = button_image.get_rect()
+    button_rect.center = (x, y)
+    return button_image, button_rect
+
+
 def buy_event():
     while True:
         MOUSE_POS = pygame.mouse.get_pos()
         draw_background("mathopoly/images/playBackground.png")
 
-        yes_button = clickable_image_buttons(
-            "mathopoly/images/Yes.png", (500, 200), 80, 80)
-        no_button = clickable_image_buttons(
-            "mathopoly/images/No.png", (700, 200), 80, 80)
-
-        yes_button.update(DISPLAY)
-        no_button.update(DISPLAY)
+        yes_image, yes_button = create_button(
+            "mathopoly/images/Yes.png", 175, 100, 550, 300)
+        no_image, no_button = create_button(
+            "mathopoly/images/No.png", 200, 100, 800, 300)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if yes_button.checkForInput(MOUSE_POS):
-                    message = buy_property(player1, 1, properties)
+                if yes_button.collidepoint(MOUSE_POS):
+                    message = buy_property(
+                        player_list[count], player_list[count]['position'], properties)
                     display_message(message)
                     pygame.time.delay(1800)
                     return
 
-                elif no_button.checkForInput(MOUSE_POS):
+                elif no_button.collidepoint(MOUSE_POS):
                     return
 
+        DISPLAY.blit(yes_image, yes_button)
+        DISPLAY.blit(no_image, no_button)
         pygame.display.update()
 
 
