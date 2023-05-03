@@ -207,11 +207,6 @@ def play_button():
                     return
                 if settings.checkForInput(PLAY_MOUSE_POS):
                     setting_button()
-                if roll == False:
-                    if end_turn_button.checkForInput(PLAY_MOUSE_POS) and solveMath == False:
-                        end_turn_message(player_list[count])
-                        count += 1
-                        roll = True
                 if roll:
                     if roll_button.checkForInput(PLAY_MOUSE_POS):
                         roll_and_update()
@@ -219,8 +214,13 @@ def play_button():
                         solveMath = True
                         x = random.randint(1, 10)
                         y = random.randint(1, 10)
-                if buy_button.checkForInput(PLAY_MOUSE_POS):
-                    buy_event()
+                else:
+                    if buy_button.checkForInput(PLAY_MOUSE_POS):
+                        buy_event()
+                    if end_turn_button.checkForInput(PLAY_MOUSE_POS) and solveMath == False:
+                        end_turn_message(player_list[count])
+                        count += 1
+                        roll = True
 
             # Takes key inputs when a problem is present
             if solveMath == True and event.type == KEYDOWN:
