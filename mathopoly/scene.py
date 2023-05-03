@@ -1,4 +1,5 @@
-import pygame, sys
+import pygame
+import sys
 from mathopoly.button import Button
 import random
 import time
@@ -15,16 +16,17 @@ load_dice_image = 0
 pygame.init()
 
 # WIDTH, HEIGHT = 1280, 720
-WIDTH, HEIGHT = 1400 , 720
+WIDTH, HEIGHT = 1400, 720
 DISPLAY = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Menu Screen")
 background_image = pygame.image.load("mathopoly/images/background.PNG")
-button_rect_image = image=pygame.image.load("mathopoly/images/Button Rect.png")
+button_rect_image = image = pygame.image.load(
+    "mathopoly/images/Button Rect.png")
 
 dice_images = [pygame.image.load('mathopoly/images/dice_one.png'), pygame.image.load('mathopoly/images/dice_two.png'), pygame.image.load('mathopoly/images/dice_three.png'),
                pygame.image.load('mathopoly/images/dice_four.png'), pygame.image.load('mathopoly/images/dice_five.png'), pygame.image.load('mathopoly/images/dice_six.png')]
 
-# Board coordinates 
+# Board coordinates
 # board =  [
 #     (145, 13), (145, 153), (145, 293), (145, 433), (145, 573),
 #     (285, 13), (425, 13), (565, 13), (705, 13), (845, 13), (985, 13),
@@ -32,6 +34,9 @@ dice_images = [pygame.image.load('mathopoly/images/dice_one.png'), pygame.image.
 #     (285, 573), (425, 573), (565, 573), (705, 573), (845, 573)
 # ]
 # Square size
+
+WHITE = ((255, 255, 255))
+BLACK = ((0, 0, 0))
 
 dog_piece = pygame.image.load('mathopoly/images/dog.png')
 dog_piece = pygame.transform.scale(dog_piece, (100, 100))
@@ -52,47 +57,47 @@ size = 140
 
 board = {
     # START to top right
-    0 : (190, 35),
-    1 : (400, 35), 
-    2 : (600, 35), 
-    3 : (790, 35), 
-    4 : (990, 35),
+    0: (190, 35),
+    1: (400, 35),
+    2: (600, 35),
+    3: (790, 35),
+    4: (990, 35),
 
     # Right top to bottom right
-    5 : (990, 170),
-    6 : (990, 315),
-    7 : (990, 460),
+    5: (990, 170),
+    6: (990, 315),
+    7: (990, 460),
 
     # Bottom right to bottom left
-    8 : (990, 590),
-    9 : (790, 590),
-    10 : (600, 590),
-    11 : (400, 590),
-    12 : (190, 590),
+    8: (990, 590),
+    9: (790, 590),
+    10: (600, 590),
+    11: (400, 590),
+    12: (190, 590),
 
     # Bottom left to START
-    13 : (190, 460),
-    14 : (190, 315),
-    15 : (190, 170)
+    13: (190, 460),
+    14: (190, 315),
+    15: (190, 170)
 }
 
 properties = {
-    0  : {'pos': (155, 35),  'name' :'Go!!',           'owner' : '', 'price' : 0},
-    1  : {'pos': (360, 35),  'name' :'Carl\'s Jr',     'owner' : '', 'price' : 0},
-    2  : {'pos': (560, 35),  'name' :'Bookstore',      'owner' : '', 'price' : 0},
-    3  : {'pos': (760, 35),  'name' :'Titan House',    'owner' : '', 'price' : 0},
-    4  : {'pos': (950, 35),  'name' :'Visit to Jail',  'owner' : '', 'price' : 0},
-    5  : {'pos': (950, 170), 'name' :'ECS Building',   'owner' : '', 'price' : 0},
-    6  : {'pos': (950, 315), 'name' :'Visual Art',     'owner' : '', 'price' : 0},
-    7  : {'pos': (950, 460), 'name' :'Gymnasium',      'owner' : '', 'price' : 0},
-    8  : {'pos': (950, 590), 'name' :'Free Parking',   'owner' : '', 'price' : 0},
-    9  : {'pos': (760, 590), 'name' :'Mystery Box',    'owner' : '', 'price' : 0},
-    10 : {'pos': (555, 590), 'name' :'Titan Stadium',  'owner' : '', 'price' : 0},
-    11 : {'pos': (360, 590), 'name' :'Titan Union',    'owner' : '', 'price' : 0},
-    12 : {'pos': (155, 590), 'name' :'Visit to Jail',  'owner' : '', 'price' : 0},
-    13 : {'pos': (150, 460), 'name' :'Pollak Library', 'owner' : '', 'price' : 0},
-    14 : {'pos': (155, 315), 'name' :'Electric Co',    'owner' : '', 'price' : 0},
-    15 : {'pos': (155, 170), 'name' :'Mihaylo Hall',   'owner' : '', 'price' : 0}
+    0: {'pos': (155, 35),  'name': 'Go!!',           'owner': ''},
+    1: {'pos': (360, 35),  'name': 'Carl\'s Jr',     'owner': '', 'price': 0},
+    2: {'pos': (560, 35),  'name': 'Bookstore',      'owner': '', 'price': 0},
+    3: {'pos': (760, 35),  'name': 'Titan House',    'owner': '', 'price': 0},
+    4: {'pos': (950, 35),  'name': 'Visit to Jail',  'owner': ''},
+    5: {'pos': (950, 170), 'name': 'ECS Building',   'owner': '', 'price': 0},
+    6: {'pos': (950, 315), 'name': 'Visual Art',     'owner': '', 'price': 0},
+    7: {'pos': (950, 460), 'name': 'Gymnasium',      'owner': '', 'price': 0},
+    8: {'pos': (950, 590), 'name': 'Free Parking',   'owner': ''},
+    9: {'pos': (760, 590), 'name': 'Mystery Box',    'owner': ''},
+    10: {'pos': (555, 590), 'name': 'Titan Stadium',  'owner': '', 'price': 0},
+    11: {'pos': (360, 590), 'name': 'Titan Union',    'owner': '', 'price': 0},
+    12: {'pos': (155, 590), 'name': 'Visit to Jail',  'owner': ''},
+    13: {'pos': (150, 460), 'name': 'Pollak Library', 'owner': '', 'price': 0},
+    14: {'pos': (155, 315), 'name': 'Electric Co',    'owner': '', 'price': 0},
+    15: {'pos': (155, 170), 'name': 'Mihaylo Hall',   'owner': '', 'price': 0}
 }
 
 playerMove = 0
@@ -102,10 +107,13 @@ y = 0
 userInput = ''
 solveMath = False
 
-def get_font(size): # Returns Press-Start-2P in the desired size
+
+def get_font(size):  # Returns Press-Start-2P in the desired size
     return pygame.font.Font("mathopoly/images/font.ttf", size)
 
 # plays music
+
+
 def start():
     """Starts the music"""
     if True:
@@ -118,50 +126,65 @@ def start():
             raise SystemExit(1) from pygame_error
 
 # Draw the background for the Menu Screen
-## update this function
+# update this function
+
+
 def draw_background(image):
     background_image = pygame.image.load(image)
     ''' Re-size the background image'''
-    background = pygame.transform.scale(background_image,(WIDTH, HEIGHT))
-    DISPLAY.blit(background, (0,0))
+    background = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
+    DISPLAY.blit(background, (0, 0))
 
 # Access to the game
+
+
 def play_button():
-    global playerMove, count, dog_piece, roll, x , y, userInput, solveMath
+    global playerMove, count, dog_piece, roll, x, y, userInput, solveMath
     font = pygame.font.Font(None, 50)
     while True:
 
         PLAY_MOUSE_POS = pygame.mouse.get_pos()
         draw_background("mathopoly/images/playBackground.png")
-        play_back_button = pygame.image.load("mathopoly/images/playBackButton.png")
+        play_back_button = pygame.image.load(
+            "mathopoly/images/playBackButton.png")
         draw_board()
         text_properties()
-        scaled_play_back_button = pygame.transform.scale(play_back_button, (40, 40))
+        scaled_play_back_button = pygame.transform.scale(
+            play_back_button, (40, 40))
         return_button = Button(scaled_play_back_button, pos=(25, 25), text_input="", font=get_font(40),
-                            base_color="#d7fcd4", hovering_color="White")
+                               base_color="#d7fcd4", hovering_color="White")
 
         widget_button = pygame.image.load("mathopoly/images/widgetButton.png")
         scaled_widget_button = pygame.transform.scale(widget_button, (40, 40))
         settings = Button(scaled_widget_button, pos=(1375, 25), text_input="", font=get_font(40),
-                        base_color="#d7fcd4", hovering_color="White")
+                          base_color="#d7fcd4", hovering_color="White")
 
-        scaled_build_button = pygame.transform.scale(button_rect_image, (150, 40))
+        scaled_build_button = pygame.transform.scale(
+            button_rect_image, (150, 40))
         roll_button = Button(scaled_build_button, pos=(640, 280), text_input="Roll", font=get_font(20),
+                             base_color="#d7fcd4", hovering_color="White")
+
+        scaled_build_button = pygame.transform.scale(
+            button_rect_image, (150, 40))
+        build_button = Button(scaled_build_button, pos=(400, 200), text_input="BUILD", font=get_font(20),
                               base_color="#d7fcd4", hovering_color="White")
 
-        scaled_build_button = pygame.transform.scale(button_rect_image, (150, 40))
-        build_button = Button(scaled_build_button, pos=(400, 200), text_input="BUILD", font=get_font(20),
-                        base_color="#d7fcd4", hovering_color="White")
-        
-        scaled_sell_button = pygame.transform.scale(button_rect_image, (150, 40))
+        scaled_sell_button = pygame.transform.scale(
+            button_rect_image, (150, 40))
         sell_button = Button(scaled_sell_button, pos=(800, 200), text_input="SELL", font=get_font(20),
-                        base_color="#d7fcd4", hovering_color="White")
-        
-        scaled_end_turn_button = pygame.transform.scale(button_rect_image, (190, 50))
+                             base_color="#d7fcd4", hovering_color="White")
+
+        scaled_end_turn_button = pygame.transform.scale(
+            button_rect_image, (190, 50))
         end_turn_button = Button(scaled_end_turn_button, pos=(640, 470), text_input="END TURN", font=get_font(20),
-                        base_color="#d7fcd4", hovering_color="White")
-        
-        
+                                 base_color="#d7fcd4", hovering_color="White")
+
+        scaled_end_turn_button = pygame.transform.scale(
+            button_rect_image, (190, 50))
+        buy_button = Button(scaled_end_turn_button, pos=(820, 370), text_input="Buy", font=get_font(20),
+                            base_color="#d7fcd4", hovering_color="White")
+
+        buy_button.update(DISPLAY)
         return_button.update(DISPLAY)
         # build_button.update(DISPLAY)
         # sell_button.update(DISPLAY)
@@ -184,18 +207,20 @@ def play_button():
                     return
                 if settings.checkForInput(PLAY_MOUSE_POS):
                     setting_button()
-                if roll == False:
-                    if end_turn_button.checkForInput(PLAY_MOUSE_POS) and solveMath == False:
-                        end_turn_message(player_list[count])
-                        roll = True
-                if roll:
+                if roll:  # If true, you can click the roll button
                     if roll_button.checkForInput(PLAY_MOUSE_POS):
                         roll_and_update()
-                        count += 1
                         roll = False
                         solveMath = True
                         x = random.randint(1, 10)
                         y = random.randint(1, 10)
+                else:  # Else, you can click the buy and end turn buttons
+                    if buy_button.checkForInput(PLAY_MOUSE_POS):
+                        buy_event()
+                    if end_turn_button.checkForInput(PLAY_MOUSE_POS) and solveMath == False:
+                        end_turn_message(player_list[count])
+                        count += 1
+                        roll = True
 
             # Takes key inputs when a problem is present
             if solveMath == True and event.type == KEYDOWN:
@@ -212,15 +237,16 @@ def play_button():
                     solveMath = False
 
         # Displays only when the roll button is pressed
-        if solveMath == True:       
-            mathProblem = font.render("{0} + {1}".format(x, y), True, (0, 0, 0))
+        if solveMath == True:
+            mathProblem = font.render(
+                "{0} + {1}".format(x, y), True, (0, 0, 0))
             block = font.render(userInput, True, (0, 0, 0))
 
             xRect = mathProblem.get_rect()
             rect = block.get_rect()
             # rect.center = DISPLAY.get_rect().center
             rect.center = (700, 500)
-            xRect.center = (700,300)
+            xRect.center = (700, 300)
 
             DISPLAY.blit(block, rect)
             DISPLAY.blit(mathProblem, xRect)
@@ -238,15 +264,19 @@ def play_button():
         pygame.display.update()
 
 # Changing the music and sound
+
+
 def setting_button():
-    volume = 0.1 # initialize volume to a default value
+    # initialize volume current volume
+    volume = pygame.mixer.music.get_volume()
     while True:
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
         draw_background("mathopoly/images/playBackground.png")
 
         button_rect = pygame.transform.scale(button_rect_image, (300, 80))
-        VOLUME_LABEL = get_font(40).render(f"Volume: {int(volume * 100)}%", True, (255, 255, 255))
+        VOLUME_LABEL = get_font(40).render(
+            f"Volume: {int(volume * 100)}%", True, (255, 255, 255))
         UP_BUTTON = Button(button_rect, pos=(640 + 60, 300), text_input="UP",
                            font=get_font(40), base_color="#d7fcd4", hovering_color="White")
         DOWN_BUTTON = Button(button_rect, pos=(640 + 60, 450), text_input="DOWN",
@@ -272,26 +302,30 @@ def setting_button():
                     volume = max(volume - 0.1, 0.0)
                     pygame.mixer.music.set_volume(volume)
                 elif BACK_BUTTON.rect.collidepoint(MENU_MOUSE_POS):
-                    return # exit the function
+                    return  # exit the function
 
         pygame.display.update()
 
 
 # Close the application
-## thinking about it
+# thinking about it
 def quit_button():
     pygame.quit()
     sys.exit()
 
 # Change color and appearance when
 # the mouse cursor interacts with them.
+
+
 def update_button(button, MENU_MOUSE_POS):
     button.changeColor(MENU_MOUSE_POS)
     button.update(DISPLAY)
 
+
 def roll_dice():
     roll = random.randint(1, 6)
     return roll
+
 
 def roll_and_update():
     global dice_1, count, load_dice_image
@@ -306,6 +340,7 @@ def roll_and_update():
     load_dice_image = roll1
 
     dice_1 = player_list[count]['position']
+    print(player_list[count]['position'])
     dice_1 += roll1
 
     if dice_1 >= len(board):
@@ -323,17 +358,22 @@ def roll_and_update():
 
     print(f"Total: {dice_1}")
 
+# End turn message that will display when the user ends their turn to notify players
+
 
 def end_turn_message(player):
     font = pygame.font.Font(None, 30)
     text = font.render(
-        f"End of Turn: {player['name']}", True, (255, 255, 255))
-    text_rect = text.get_rect(center=(WIDTH / 2, HEIGHT - 50))
+        f"End of Turn: {player['name']}", True, (0, 0, 0))
+    text_rect = text.get_rect(center=(635, 515))
     DISPLAY.blit(text, text_rect)
     draw_piece(player1)
     draw_piece(player2)
+    show_dice()
     pygame.display.update()
     pygame.time.delay(2000)
+
+# Function that shows the dice that was rolled
 
 
 def show_dice():
@@ -341,14 +381,16 @@ def show_dice():
     dice1_image = pygame.transform.scale(dice1_image, (100, 100))
 
     DISPLAY.blit(dice1_image, (590, 320))
-    
+
+
 def draw_board():
     background_image = pygame.image.load('mathopoly/images/board.PNG')
     background_image = pygame.transform.scale(background_image, (1000, 700))
-    background_image.set_colorkey((255,255,255))
+    background_image.set_colorkey((255, 255, 255))
     DISPLAY.blit(background_image, (145, 13))
     # for i in range(20):
     #     pygame.draw.rect(DISPLAY, (120,120,120) , [board[i][0], board[i][1], size, size], 1)
+
 
 def draw_piece(player):
     global dog_piece
@@ -362,6 +404,8 @@ def draw_piece(player):
 # TO DO
 # Properly display on screen
 # Add sound effects to rolling animation
+
+
 def create_players():
     font = pygame.font.SysFont("Comic Sans MS", 24)
 
@@ -393,7 +437,7 @@ def create_players():
 
         return_button.update(DISPLAY)
         settings.update(DISPLAY)
-        
+
         add_Player = Button(button_background, pos=(700, 330), text_input="Add Player",
                             font=get_font(28), base_color="#d7fcd4", hovering_color="White")
 
@@ -461,7 +505,7 @@ def create_players():
 
         pygame.draw.rect(DISPLAY, pygame.Color("beige"), input_rect)
         pygame.draw.rect(DISPLAY, pygame.Color("gray"), input_rect, 2)
-        
+
         font = get_font(20)
         input_surface = font.render(player_input, True, pygame.Color("black"))
         # DISPLAY.blit(input_surface, (input_rect.x + 5, input_rect.y + 5))
@@ -478,6 +522,92 @@ def create_players():
         pygame.display.flip()
 
         pygame.display.update()
+
+# Function that allows users to buy properties
+
+
+def buy_property(player, tile_number, properties):
+    message = ""
+    # If the key price is not found in properties, then the property can't be bought
+    if 'price' not in properties[tile_number]:
+        message = f"{properties[tile_number]['name']} square cannot be bought"
+    # Else if the property has an owner in the tile, it can't be bought
+    elif properties[tile_number]['owner'] != '':
+        message = f"{properties[tile_number]['owner']} owns this property"
+    elif properties[tile_number]['owner'] == '' and player['balance'] >= properties[tile_number]['price']:
+        player['balance'] -= properties[tile_number]['price']
+        properties[tile_number]['owner'] = player['name']
+        message = f"{player['name']} bought {properties[tile_number]['name']} for {properties[tile_number]['price']}."
+    print(message)
+    return message
+
+
+def display_message(message):
+    # Clear the screen
+    DISPLAY.fill(WHITE)
+    draw_background("mathopoly/images/playBackground.png")
+
+    # Calculate the width of the message
+    font = get_font(20)
+    message_width = font.size(message)[0]
+
+    # Create a message box
+    message_box_width = message_width + 20
+    message_box = pygame.Rect(
+        (1280 - message_box_width) / 2, (720 - 100) / 2, message_box_width, 100)
+    pygame.draw.rect(DISPLAY, BLACK, message_box, 2)
+
+    # Display the message
+    message_text = font.render(message, True, BLACK)
+    message_rect = message_text.get_rect(center=message_box.center)
+    DISPLAY.blit(message_text, message_rect)
+
+    # Update the Pygame window
+    pygame.display.update()
+
+# Function to create images that are clickable
+
+
+def create_button(image, w, h, x, y):
+    # Load and scale image
+    button_image = pygame.image.load(image)
+    button_image = pygame.transform.scale(button_image, (w, h))
+    # Create and center button rectangle
+    button_rect = button_image.get_rect()
+    button_rect.center = (x, y)
+    return button_image, button_rect
+
+
+def buy_event():
+    while True:
+        MOUSE_POS = pygame.mouse.get_pos()
+        draw_background("mathopoly/images/playBackground.png")
+
+        yes_image, yes_button = create_button(
+            "mathopoly/images/giga_yes.png", 175, 100, 550, 300)
+        yes_image.set_colorkey((255, 255, 255))
+        no_image, no_button = create_button(
+            "mathopoly/images/No.png", 200, 100, 800, 300)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if yes_button.collidepoint(MOUSE_POS):
+                    message = buy_property(
+                        player_list[count], player_list[count]['position'], properties)
+                    display_message(message)
+                    pygame.time.delay(1800)
+                    return
+
+                elif no_button.collidepoint(MOUSE_POS):
+                    return
+
+        DISPLAY.blit(yes_image, yes_button)
+        DISPLAY.blit(no_image, no_button)
+        pygame.display.update()
+
 
 def text_properties():
     font = pygame.font.SysFont(None, 40)

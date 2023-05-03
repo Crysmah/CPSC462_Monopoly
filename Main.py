@@ -2,9 +2,11 @@
 
 from mathopoly.game import *
 
+
 def main():
     """Main function to run the game"""
     Game.run()
 
-if __name__ =='__main__':
+
+if __name__ == '__main__':
     main()
