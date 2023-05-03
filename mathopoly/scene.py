@@ -573,7 +573,8 @@ def buy_event():
         draw_background("mathopoly/images/playBackground.png")
 
         yes_image, yes_button = create_button(
-            "mathopoly/images/Yes.png", 175, 100, 550, 300)
+            "mathopoly/images/giga_yes.png", 175, 100, 550, 300)
+        yes_image.set_colorkey((255, 255, 255))
         no_image, no_button = create_button(
             "mathopoly/images/No.png", 200, 100, 800, 300)
 
