@@ -524,7 +524,7 @@ def buy_property(player, tile_number, properties):
     if 'price' not in properties[tile_number]:
         message = f"{properties[tile_number]['name']} square cannot be bought"
     elif properties[tile_number]['owner'] != '':
-        message = f"{player['name']} owns this property"
+        message = f"{properties[tile_number]['owner']} owns this property"
     elif properties[tile_number]['owner'] == '' and player['balance'] >= properties[tile_number]['price']:
         player['balance'] -= properties[tile_number]['price']
         properties[tile_number]['owner'] = player['name']
