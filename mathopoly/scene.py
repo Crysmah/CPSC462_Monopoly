@@ -207,14 +207,14 @@ def play_button():
                     return
                 if settings.checkForInput(PLAY_MOUSE_POS):
                     setting_button()
-                if roll:
+                if roll:  # If true, you can click the roll button
                     if roll_button.checkForInput(PLAY_MOUSE_POS):
                         roll_and_update()
                         roll = False
                         solveMath = True
                         x = random.randint(1, 10)
                         y = random.randint(1, 10)
-                else:
+                else:  # Else, you can click the buy and end turn buttons
                     if buy_button.checkForInput(PLAY_MOUSE_POS):
                         buy_event()
                     if end_turn_button.checkForInput(PLAY_MOUSE_POS) and solveMath == False:
@@ -358,11 +358,13 @@ def roll_and_update():
 
     print(f"Total: {dice_1}")
 
+# End turn message that will display when the user ends their turn to notify players
+
 
 def end_turn_message(player):
     font = pygame.font.Font(None, 30)
     text = font.render(
-        f"End of Turn: {player['name']}", True, (255, 255, 255))
+        f"End of Turn: {player['name']}", True, (0, 0, 0))
     text_rect = text.get_rect(center=(635, 515))
     DISPLAY.blit(text, text_rect)
     draw_piece(player1)
@@ -370,6 +372,8 @@ def end_turn_message(player):
     show_dice()
     pygame.display.update()
     pygame.time.delay(2000)
+
+# Function that shows the dice that was rolled
 
 
 def show_dice():
@@ -519,11 +523,15 @@ def create_players():
 
         pygame.display.update()
 
+# Function that allows users to buy properties
+
 
 def buy_property(player, tile_number, properties):
     message = ""
+    # If the key price is not found in properties, then the property can't be bought
     if 'price' not in properties[tile_number]:
         message = f"{properties[tile_number]['name']} square cannot be bought"
+    # Else if the property has an owner in the tile, it can't be bought
     elif properties[tile_number]['owner'] != '':
         message = f"{properties[tile_number]['owner']} owns this property"
     elif properties[tile_number]['owner'] == '' and player['balance'] >= properties[tile_number]['price']:
@@ -556,6 +564,8 @@ def display_message(message):
 
     # Update the Pygame window
     pygame.display.update()
+
+# Function to create images that are clickable
 
 
 def create_button(image, w, h, x, y):
