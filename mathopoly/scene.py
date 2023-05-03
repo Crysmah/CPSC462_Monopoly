@@ -363,10 +363,11 @@ def end_turn_message(player):
     font = pygame.font.Font(None, 30)
     text = font.render(
         f"End of Turn: {player['name']}", True, (255, 255, 255))
-    text_rect = text.get_rect(center=(WIDTH / 2, HEIGHT - 50))
+    text_rect = text.get_rect(center=(635, 515))
     DISPLAY.blit(text, text_rect)
     draw_piece(player1)
     draw_piece(player2)
+    show_dice()
     pygame.display.update()
     pygame.time.delay(2000)
 
