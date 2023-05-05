@@ -1,6 +1,6 @@
-import pygame
-import sys
+import pygame, sys
 from mathopoly.button import Button
+from mathopoly.mathProblems import MathQuiz
 import random
 import time
 from pygame.locals import *
@@ -13,6 +13,8 @@ roll = True
 
 load_dice_image = 0
 
+game_over = 0
+
 pygame.init()
 
 # WIDTH, HEIGHT = 1280, 720
@@ -20,11 +22,13 @@ WIDTH, HEIGHT = 1400, 720
 DISPLAY = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Menu Screen")
 background_image = pygame.image.load("mathopoly/images/background.PNG")
-button_rect_image = image = pygame.image.load(
-    "mathopoly/images/Button Rect.png")
+button_rect_image = image=pygame.image.load("mathopoly/images/Button Rect.png")
 
 dice_images = [pygame.image.load('mathopoly/images/dice_one.png'), pygame.image.load('mathopoly/images/dice_two.png'), pygame.image.load('mathopoly/images/dice_three.png'),
                pygame.image.load('mathopoly/images/dice_four.png'), pygame.image.load('mathopoly/images/dice_five.png'), pygame.image.load('mathopoly/images/dice_six.png')]
+
+win_image = pygame.image.load('mathopoly/images/win.png').convert_alpha()
+win_image = pygame.transform.scale(win_image, (250, 250))
 
 # Board coordinates
 # board =  [
@@ -108,7 +112,13 @@ userInput = ''
 solveMath = False
 
 
-def get_font(size):  # Returns Press-Start-2P in the desired size
+x = 0
+y = 0
+userInput = ''
+solveMath = False
+
+
+def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("mathopoly/images/font.ttf", size)
 
 # plays music
@@ -123,17 +133,35 @@ def start():
             print(f'Cannot open {"vibes.mp3"}')
             raise SystemExit(1) from pygame_error
 
+# stops the music
+def stop():
+    """Stops the music"""
+    pygame.mixer.fadeout(500)
+    pygame.mixer.music.stop()
+
+# end screen music
+def end_music():
+    """ending music"""
+    if True:
+        try:
+            pygame.mixer.music.load("mathopoly/music/TheWickedWild.mp3")
+            pygame.mixer.music.set_volume(0.1)
+            pygame.mixer.music.play(-1, 0.0, 500)
+        except pygame.error as pygame_error:
+            print(f'Cannot open {"TheWickedWild.mp3"}')
+            raise SystemExit(1) from pygame_error
+
 # Draw the background for the Menu Screen
 # update this function
 def draw_background(image):
     background_image = pygame.image.load(image)
     ''' Re-size the background image'''
-    background = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
-    DISPLAY.blit(background, (0, 0))
+    background = pygame.transform.scale(background_image,(WIDTH, HEIGHT))
+    DISPLAY.blit(background, (0,0))
 
 # Access to the game
 def play_button():
-    global playerMove, count, dog_piece, roll, x, y, userInput, solveMath
+    global playerMove, count, dog_piece, roll, x, y, userInput, solveMath, game_over
     font = pygame.font.Font(None, 50)
     while True:
 
@@ -146,8 +174,9 @@ def play_button():
         scaled_play_back_button = pygame.transform.scale(
             play_back_button, (40, 40))
         return_button = Button(scaled_play_back_button, pos=(25, 25), text_input="", font=get_font(40),
-                               base_color="#d7fcd4", hovering_color="White")
+                            base_color="#d7fcd4", hovering_color="White")
 
+        # widget button
         widget_button = pygame.image.load("mathopoly/images/widgetButton.png")
         scaled_widget_button = pygame.transform.scale(widget_button, (40, 40))
         settings = Button(scaled_widget_button, pos=(1375, 25), text_input="", font=get_font(40),
@@ -177,15 +206,18 @@ def play_button():
             button_rect_image, (190, 50))
         buy_button = Button(scaled_end_turn_button, pos=(820, 370), text_input="Buy", font=get_font(20),
                             base_color="#d7fcd4", hovering_color="White")
+        scaled_end_turn_button = pygame.transform.scale(
+            button_rect_image, (190, 50))
+        restart = Button(scaled_end_turn_button, pos=(1300, 690), text_input="Restart", font=get_font(20),
+                         base_color="#d7fcd4", hovering_color="White")
 
         buy_button.update(DISPLAY)
         return_button.update(DISPLAY)
-        # build_button.update(DISPLAY)
-        # sell_button.update(DISPLAY)
         end_turn_button.update(DISPLAY)
         roll_button.update(DISPLAY)
         return_button.update(DISPLAY)
         settings.update(DISPLAY)
+        restart.update(DISPLAY)
         #DISPLAY.blit(scaled_play_back_button, (10,10))
 
         if count >= len(player_list):
@@ -201,23 +233,38 @@ def play_button():
                     return
                 if settings.checkForInput(PLAY_MOUSE_POS):
                     setting_button()
-                if roll:  # If true, you can click the roll button
-                    if roll_button.checkForInput(PLAY_MOUSE_POS):
-                        roll_and_update()
-                        roll = False
-                        solveMath = True
-                        x = random.randint(1, 10)
-                        y = random.randint(1, 10)
-                else:  # Else, you can click the buy and end turn buttons
-                    if buy_button.checkForInput(PLAY_MOUSE_POS):
-                        buy_event()
-                    if end_turn_button.checkForInput(PLAY_MOUSE_POS) and solveMath == False:
-                        end_turn_message(player_list[count])
-                        count += 1
+                if game_over == 0:
+                    if roll:  # If true, you can click the roll button
+                        if roll_button.checkForInput(PLAY_MOUSE_POS):
+                            roll_and_update()
+                            roll = False
+                            solveMath = True
+                            x = random.randint(1, 10)
+                            y = random.randint(1, 10)
+                    else:  # Else, you can click the buy and end turn buttons
+                        if buy_button.checkForInput(PLAY_MOUSE_POS):
+                            buy_event()
+                            gameStatus(player_list, properties)
+                        if end_turn_button.checkForInput(PLAY_MOUSE_POS) and solveMath == False:
+                            end_turn_message(player_list[count])
+                            count += 1
+                            roll = True
+                else:
+                    if restart.checkForInput(PLAY_MOUSE_POS):
+                        for prop in properties.values():
+                            prop['owner'] = ''
+
+                        for player in player_list:
+                            player['position'] = 0
+
+                        game_over = 0
+                        count = 0
+                        playerMove = 0
                         roll = True
+                        stop()
+                        start()
 
-            # Takes key inputs when a problem is present
-
+                        # Takes key inputs when a problem is present
             if solveMath == True and event.type == KEYDOWN:
                 if event.unicode.isnumeric():
                     userInput += event.unicode
@@ -235,6 +282,7 @@ def play_button():
                         DISPLAY.blit(rendered_correct, correct_position)
                         pygame.display.update()
                         pygame.time.delay(1800)
+
                     else:
                         print('Wrong')
                         # creating the message box
@@ -246,6 +294,7 @@ def play_button():
                         DISPLAY.blit(rendered_wrong, wrong_position)
                         pygame.display.update()
                         pygame.time.delay(1800)
+
                     userInput = ''
                     solveMath = False
 
@@ -275,12 +324,16 @@ def play_button():
         # draw_piece(player3)
         # draw_piece(player4)
         show_dice()
+
+        if game_over != 0:
+            if game_over == 1:
+                DISPLAY.blit(win_image, (500, 250))
+
         pygame.display.update()
 
 # Changing the music and sound
 def setting_button():
-    # initialize volume current volume
-    volume = pygame.mixer.music.get_volume()
+    volume = 0.1 # initialize volume to a default value
     while True:
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
@@ -314,13 +367,13 @@ def setting_button():
                     volume = max(volume - 0.1, 0.0)
                     pygame.mixer.music.set_volume(volume)
                 elif BACK_BUTTON.rect.collidepoint(MENU_MOUSE_POS):
-                    return  # exit the function
+                    return # exit the function
 
         pygame.display.update()
 
 
 # Close the application
-# thinking about it
+## thinking about it
 def quit_button():
     pygame.quit()
     sys.exit()
@@ -379,7 +432,7 @@ def end_turn_message(player):
     draw_piece(player2)
     show_dice()
     pygame.display.update()
-    pygame.time.delay(2000)
+    pygame.time.delay(1800)
 
 # Function that shows the dice that was rolled
 def show_dice():
@@ -410,7 +463,6 @@ def draw_piece(player):
 def create_players():
     players = []
     player_input = ""
-    # input_rect = pygame.Rect(400, 200, 440, 50)
     input_rect = pygame.Rect(483, 200, 440, 50)
     input_active = False
 
@@ -610,3 +662,20 @@ def text_properties():
         text = font.render(properties[index]['name'], True, (0, 0, 0))
         pos = properties[index]['pos']
         DISPLAY.blit(text, pos)
+
+
+def gameStatus(player_list, properties):
+    global game_over
+    counts = {}
+    stop()
+    end_music()
+    for player in player_list:
+        counts[player['name']] = 0
+        for prop in properties.values():
+            if prop['owner'] == player['name']:
+                counts[player['name']] += 1
+
+        if counts[player['name']] >= 1:
+            game_over = 1
+    print(counts)
+    return counts
