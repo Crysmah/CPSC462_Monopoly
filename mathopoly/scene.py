@@ -232,10 +232,10 @@ def play_button():
                     if x + y == int(userInput):
                         print('Correct')
                         # creating the message box
-                        correct_font = pygame.font.Font(pygame.font.get_default_font(), 40)
+                        correct_font = get_font(100)
                         rendered_correct = correct_font.render("Correct", True, BLACK)
                         # the position for the message
-                        correct_position = rendered_correct.get_rect(center=(WIDTH / 2, HEIGHT / 2 - 100))
+                        correct_position = rendered_correct.get_rect(center=(WIDTH / 2, HEIGHT / 2))
                         # loads the correct message
                         DISPLAY.blit(rendered_correct, correct_position)
                         pygame.display.update()
@@ -244,10 +244,10 @@ def play_button():
                     else:
                         print('Wrong')
                         # creating the message box
-                        wrong_font = pygame.font.Font(pygame.font.get_default_font(), 40)
+                        wrong_font = get_font(100)
                         rendered_wrong = wrong_font.render("Wrong", True, BLACK)
                         # the position for the message
-                        wrong_position = rendered_wrong.get_rect(center=(WIDTH / 2, HEIGHT / 2 - 100))
+                        wrong_position = rendered_wrong.get_rect(center=(WIDTH / 2, HEIGHT / 2))
                         # loads the correct message
                         DISPLAY.blit(rendered_wrong, wrong_position)
                         pygame.display.update()
@@ -258,9 +258,9 @@ def play_button():
 
         # Displays only when the roll button is pressed
         if solveMath == True:
-            mathProblem = font.render(
-                "{0} + {1}".format(x, y), True, (0, 0, 0))
-            block = font.render(userInput, True, (0, 0, 0))
+            mathProblem = get_font(40).render(
+                "{0}+{1}".format(x, y), True, (0, 0, 0))
+            block = get_font(40).render(userInput, True, (0, 0, 0))
 
             xRect = mathProblem.get_rect()
             rect = block.get_rect()
