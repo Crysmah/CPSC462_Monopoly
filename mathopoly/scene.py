@@ -408,8 +408,6 @@ def draw_piece(player):
 
 # creates the players who will play the game
 def create_players():
-    font = pygame.font.SysFont("Comic Sans MS", 24)
-
     players = []
     player_input = ""
     # input_rect = pygame.Rect(400, 200, 440, 50)
