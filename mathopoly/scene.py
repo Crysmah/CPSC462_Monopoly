@@ -223,7 +223,6 @@ def play_button():
                         roll = True
 
             # Takes key inputs when a problem is present
-
             if solveMath == True and event.type == KEYDOWN:
                 if event.unicode.isnumeric():
                     userInput += event.unicode
@@ -232,8 +231,28 @@ def play_button():
                 elif event.key == K_RETURN:
                     if x + y == int(userInput):
                         print('Correct')
+                        # creating the message box
+                        correct_font = pygame.font.Font(pygame.font.get_default_font(), 40)
+                        rendered_correct = correct_font.render("Correct", True, BLACK)
+                        # the position for the message
+                        correct_position = rendered_correct.get_rect(center=(WIDTH / 2, HEIGHT / 2 - 100))
+                        # loads the correct message
+                        DISPLAY.blit(rendered_correct, correct_position)
+                        pygame.display.update()
+                        pygame.time.delay(1800)
+
                     else:
                         print('Wrong')
+                        # creating the message box
+                        wrong_font = pygame.font.Font(pygame.font.get_default_font(), 40)
+                        rendered_wrong = wrong_font.render("Wrong", True, BLACK)
+                        # the position for the message
+                        wrong_position = rendered_wrong.get_rect(center=(WIDTH / 2, HEIGHT / 2 - 100))
+                        # loads the correct message
+                        DISPLAY.blit(rendered_wrong, wrong_position)
+                        pygame.display.update()
+                        pygame.time.delay(1800)
+
                     userInput = ''
                     solveMath = False
 
