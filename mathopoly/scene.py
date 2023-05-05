@@ -112,8 +112,6 @@ def get_font(size):  # Returns Press-Start-2P in the desired size
     return pygame.font.Font("mathopoly/images/font.ttf", size)
 
 # plays music
-
-
 def start():
     """Starts the music"""
     if True:
@@ -127,8 +125,6 @@ def start():
 
 # Draw the background for the Menu Screen
 # update this function
-
-
 def draw_background(image):
     background_image = pygame.image.load(image)
     ''' Re-size the background image'''
@@ -136,8 +132,6 @@ def draw_background(image):
     DISPLAY.blit(background, (0, 0))
 
 # Access to the game
-
-
 def play_button():
     global playerMove, count, dog_piece, roll, x, y, userInput, solveMath
     font = pygame.font.Font(None, 50)
@@ -223,6 +217,7 @@ def play_button():
                         roll = True
 
             # Takes key inputs when a problem is present
+
             if solveMath == True and event.type == KEYDOWN:
                 if event.unicode.isnumeric():
                     userInput += event.unicode
@@ -244,9 +239,10 @@ def play_button():
 
             xRect = mathProblem.get_rect()
             rect = block.get_rect()
-            # rect.center = DISPLAY.get_rect().center
-            rect.center = (700, 500)
-            xRect.center = (700, 300)
+            # the math question being displayed
+            xRect.center = (450, 280)
+            # the users input is being displayed
+            rect.center = (450, 475)
 
             DISPLAY.blit(block, rect)
             DISPLAY.blit(mathProblem, xRect)
@@ -264,8 +260,6 @@ def play_button():
         pygame.display.update()
 
 # Changing the music and sound
-
-
 def setting_button():
     # initialize volume current volume
     volume = pygame.mixer.music.get_volume()
@@ -315,8 +309,6 @@ def quit_button():
 
 # Change color and appearance when
 # the mouse cursor interacts with them.
-
-
 def update_button(button, MENU_MOUSE_POS):
     button.changeColor(MENU_MOUSE_POS)
     button.update(DISPLAY)
@@ -359,8 +351,6 @@ def roll_and_update():
     print(f"Total: {dice_1}")
 
 # End turn message that will display when the user ends their turn to notify players
-
-
 def end_turn_message(player):
     font = pygame.font.Font(None, 30)
     text = font.render(
@@ -374,24 +364,20 @@ def end_turn_message(player):
     pygame.time.delay(2000)
 
 # Function that shows the dice that was rolled
-
-
 def show_dice():
     dice1_image = dice_images[load_dice_image-1]
     dice1_image = pygame.transform.scale(dice1_image, (100, 100))
 
     DISPLAY.blit(dice1_image, (590, 320))
 
-
+# draws the board on the screen
 def draw_board():
     background_image = pygame.image.load('mathopoly/images/board.PNG')
     background_image = pygame.transform.scale(background_image, (1000, 700))
     background_image.set_colorkey((255, 255, 255))
     DISPLAY.blit(background_image, (145, 13))
-    # for i in range(20):
-    #     pygame.draw.rect(DISPLAY, (120,120,120) , [board[i][0], board[i][1], size, size], 1)
 
-
+# displays the pieces for the players
 def draw_piece(player):
     global dog_piece
     # DISPLAY.blit(dog_piece, (190+210, 35))
@@ -401,11 +387,8 @@ def draw_piece(player):
         dog_piece = pygame.transform.flip(dog_piece, True, False)
 
     DISPLAY.blit(dog_piece, board[player['position']])
-# TO DO
-# Properly display on screen
-# Add sound effects to rolling animation
 
-
+# creates the players who will play the game
 def create_players():
     font = pygame.font.SysFont("Comic Sans MS", 24)
 
@@ -524,8 +507,6 @@ def create_players():
         pygame.display.update()
 
 # Function that allows users to buy properties
-
-
 def buy_property(player, tile_number, properties):
     message = ""
     # If the key price is not found in properties, then the property can't be bought
@@ -566,8 +547,6 @@ def display_message(message):
     pygame.display.update()
 
 # Function to create images that are clickable
-
-
 def create_button(image, w, h, x, y):
     # Load and scale image
     button_image = pygame.image.load(image)
@@ -577,7 +556,7 @@ def create_button(image, w, h, x, y):
     button_rect.center = (x, y)
     return button_image, button_rect
 
-
+# function takes of buying properties
 def buy_event():
     while True:
         MOUSE_POS = pygame.mouse.get_pos()
@@ -608,7 +587,7 @@ def buy_event():
         DISPLAY.blit(no_image, no_button)
         pygame.display.update()
 
-
+# this function takes care of the naming for the properties
 def text_properties():
     font = pygame.font.SysFont(None, 40)
     for index in properties:
