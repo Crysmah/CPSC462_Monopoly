@@ -133,6 +133,23 @@ def start():
             print(f'Cannot open {"vibes.mp3"}')
             raise SystemExit(1) from pygame_error
 
+# stops the music
+def stop():
+    """Stops the music"""
+    pygame.mixer.fadeout(500)
+    pygame.mixer.music.stop()
+
+def end_music():
+    """ending music"""
+    if True:
+        try:
+            pygame.mixer.music.load("mathopoly/music/TheWickedWild.mp3")
+            pygame.mixer.music.set_volume(0.1)
+            pygame.mixer.music.play(-1, 0.0, 500)
+        except pygame.error as pygame_error:
+            print(f'Cannot open {"TheWickedWild.mp3"}')
+            raise SystemExit(1) from pygame_error
+
 # Draw the background for the Menu Screen
 # update this function
 def draw_background(image):
@@ -642,6 +659,8 @@ def text_properties():
 def gameStatus(player_list, properties):
     global game_over
     counts = {}
+    stop()
+    end_music()
     for player in player_list:
         counts[player['name']] = 0
         for prop in properties.values():
