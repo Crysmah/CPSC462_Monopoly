@@ -13,6 +13,8 @@ roll = True
 
 load_dice_image = 0
 
+game_over = 0
+
 pygame.init()
 
 # WIDTH, HEIGHT = 1280, 720
@@ -24,6 +26,9 @@ button_rect_image = image=pygame.image.load("mathopoly/images/Button Rect.png")
 
 dice_images = [pygame.image.load('mathopoly/images/dice_one.png'), pygame.image.load('mathopoly/images/dice_two.png'), pygame.image.load('mathopoly/images/dice_three.png'),
                pygame.image.load('mathopoly/images/dice_four.png'), pygame.image.load('mathopoly/images/dice_five.png'), pygame.image.load('mathopoly/images/dice_six.png')]
+
+win_image = pygame.image.load('mathopoly/images/win.png').convert_alpha()
+win_image = pygame.transform.scale(win_image, (250, 250))
 
 # Board coordinates
 # board =  [
@@ -138,7 +143,7 @@ def draw_background(image):
 
 # Access to the game
 def play_button():
-    global playerMove, count, dog_piece, roll, x, y, userInput, solveMath
+    global playerMove, count, dog_piece, roll, x, y, userInput, solveMath, game_over
     font = pygame.font.Font(None, 50)
     while True:
 
@@ -183,15 +188,18 @@ def play_button():
             button_rect_image, (190, 50))
         buy_button = Button(scaled_end_turn_button, pos=(820, 370), text_input="Buy", font=get_font(20),
                             base_color="#d7fcd4", hovering_color="White")
+        scaled_end_turn_button = pygame.transform.scale(
+            button_rect_image, (190, 50))
+        restart = Button(scaled_end_turn_button, pos=(1300, 690), text_input="Restart", font=get_font(20),
+                         base_color="#d7fcd4", hovering_color="White")
 
         buy_button.update(DISPLAY)
         return_button.update(DISPLAY)
-        # build_button.update(DISPLAY)
-        # sell_button.update(DISPLAY)
         end_turn_button.update(DISPLAY)
         roll_button.update(DISPLAY)
         return_button.update(DISPLAY)
         settings.update(DISPLAY)
+        restart.update(DISPLAY)
         #DISPLAY.blit(scaled_play_back_button, (10,10))
 
         if count >= len(player_list):
@@ -207,22 +215,29 @@ def play_button():
                     return
                 if settings.checkForInput(PLAY_MOUSE_POS):
                     setting_button()
-                if roll:  # If true, you can click the roll button
-                    if roll_button.checkForInput(PLAY_MOUSE_POS):
-                        roll_and_update()
-                        roll = False
-                        solveMath = True
-                        x = random.randint(1, 10)
-                        y = random.randint(1, 10)
-                else:  # Else, you can click the buy and end turn buttons
-                    if buy_button.checkForInput(PLAY_MOUSE_POS):
-                        buy_event()
-                    if end_turn_button.checkForInput(PLAY_MOUSE_POS) and solveMath == False:
-                        end_turn_message(player_list[count])
-                        count += 1
-                        roll = True
+                if game_over == 0:
+                    if roll:  # If true, you can click the roll button
+                        if roll_button.checkForInput(PLAY_MOUSE_POS):
+                            roll_and_update()
+                            roll = False
+                            solveMath = True
+                            x = random.randint(1, 10)
+                            y = random.randint(1, 10)
+                    else:  # Else, you can click the buy and end turn buttons
+                        if buy_button.checkForInput(PLAY_MOUSE_POS):
+                            buy_event()
+                            gameStatus(player_list, properties)
+                        if end_turn_button.checkForInput(PLAY_MOUSE_POS) and solveMath == False:
+                            end_turn_message(player_list[count])
+                            count += 1
+                            roll = True
+                else:
+                    if restart.checkForInput(PLAY_MOUSE_POS):
+                        for prop in properties.values():
+                            prop['owner'] = ''
+                            print("1")
 
-            # Takes key inputs when a problem is present
+                        # Takes key inputs when a problem is present
             if solveMath == True and event.type == KEYDOWN:
                 if event.unicode.isnumeric():
                     userInput += event.unicode
@@ -282,6 +297,11 @@ def play_button():
         # draw_piece(player3)
         # draw_piece(player4)
         show_dice()
+
+        if game_over != 0:
+            if game_over == 1:
+                DISPLAY.blit(win_image, (500, 250))
+
         pygame.display.update()
 
 # Changing the music and sound
@@ -385,7 +405,7 @@ def end_turn_message(player):
     draw_piece(player2)
     show_dice()
     pygame.display.update()
-    pygame.time.delay(2000)
+    pygame.time.delay(1800)
 
 # Function that shows the dice that was rolled
 def show_dice():
@@ -617,3 +637,18 @@ def text_properties():
         text = font.render(properties[index]['name'], True, (0, 0, 0))
         pos = properties[index]['pos']
         DISPLAY.blit(text, pos)
+
+
+def gameStatus(player_list, properties):
+    global game_over
+    counts = {}
+    for player in player_list:
+        counts[player['name']] = 0
+        for prop in properties.values():
+            if prop['owner'] == player['name']:
+                counts[player['name']] += 1
+
+        if counts[player['name']] >= 1:
+            game_over = 1
+    print(counts)
+    return counts
