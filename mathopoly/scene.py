@@ -139,6 +139,7 @@ def stop():
     pygame.mixer.fadeout(500)
     pygame.mixer.music.stop()
 
+# end screen music
 def end_music():
     """ending music"""
     if True:
@@ -260,6 +261,8 @@ def play_button():
                         count = 0
                         playerMove = 0
                         roll = True
+                        stop()
+                        start()
 
                         # Takes key inputs when a problem is present
             if solveMath == True and event.type == KEYDOWN:
