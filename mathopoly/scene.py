@@ -252,7 +252,14 @@ def play_button():
                     if restart.checkForInput(PLAY_MOUSE_POS):
                         for prop in properties.values():
                             prop['owner'] = ''
-                            print("1")
+
+                        for player in player_list:
+                            player['position'] = 0
+
+                        game_over = 0
+                        count = 0
+                        playerMove = 0
+                        roll = True
 
                         # Takes key inputs when a problem is present
             if solveMath == True and event.type == KEYDOWN:
