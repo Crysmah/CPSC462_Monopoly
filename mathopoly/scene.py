@@ -671,7 +671,7 @@ def gameStatus(player_list, properties):
             if prop['owner'] == player['name']:
                 counts[player['name']] += 1
 
-        if counts[player['name']] >= 1:
+        if counts[player['name']] >= 5:
             winning_player = player['name']
             game_over = 1
             stop()
