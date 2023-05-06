@@ -40,12 +40,12 @@ BLACK = ((0, 0, 0))
 dog_piece = pygame.image.load('mathopoly/images/dog.png')
 dog_piece = pygame.transform.scale(dog_piece, (100, 100))
 
-plus = pygame.image.load('mathopoly/images/plus_player.jpg')
+plus = pygame.image.load('mathopoly/images/plus.png')
 plus = pygame.transform.scale(plus, (100, 100))
 plus.set_colorkey((255, 255, 255))
 
-minus = pygame.image.load('mathopoly/images/minus_player.jpg')
-minus = pygame.transform.scale(minus, (100, 100))
+minus = pygame.image.load('mathopoly/images/minus.png')
+minus = pygame.transform.scale(minus, (100, 50))
 minus.set_colorkey((255, 255, 255))
 
 player1 = {'name': 'Alice', 'balance': 1500,'property': 0, 'position': 0, 'piece': plus}
@@ -90,21 +90,21 @@ board = {
 
 properties = {
     0: {'pos': (155, 35),  'name': 'Go!!',           'owner': ''},
-    1: {'pos': (360, 35),  'name': 'Carl\'s Jr',     'owner': '', 'price': 0},
-    2: {'pos': (560, 35),  'name': 'Bookstore',      'owner': '', 'price': 0},
-    3: {'pos': (760, 35),  'name': 'Titan House',    'owner': '', 'price': 0},
+    1: {'pos': (360, 35),  'name': 'Carl\'s Jr',     'owner': '', 'price': 200},
+    2: {'pos': (560, 35),  'name': 'Bookstore',      'owner': '', 'price': 250},
+    3: {'pos': (760, 35),  'name': 'Titan House',    'owner': '', 'price': 300},
     4: {'pos': (950, 35),  'name': 'Visit to Jail',  'owner': ''},
-    5: {'pos': (950, 170), 'name': 'ECS Building',   'owner': '', 'price': 0},
-    6: {'pos': (950, 315), 'name': 'Visual Art',     'owner': '', 'price': 0},
-    7: {'pos': (950, 460), 'name': 'Gymnasium',      'owner': '', 'price': 0},
+    5: {'pos': (950, 170), 'name': 'ECS Building',   'owner': '', 'price': 300},
+    6: {'pos': (950, 315), 'name': 'Visual Art',     'owner': '', 'price': 250},
+    7: {'pos': (950, 460), 'name': 'Gymnasium',      'owner': '', 'price': 200},
     8: {'pos': (950, 590), 'name': 'Free Parking',   'owner': ''},
     9: {'pos': (760, 590), 'name': 'Mystery Box',    'owner': ''},
-    10: {'pos': (555, 590), 'name': 'Titan Stadium',  'owner': '', 'price': 0},
-    11: {'pos': (360, 590), 'name': 'Titan Union',    'owner': '', 'price': 0},
+    10: {'pos': (555, 590), 'name': 'Titan Stadium',  'owner': '', 'price': 400},
+    11: {'pos': (360, 590), 'name': 'Titan Union',    'owner': '', 'price': 400},
     12: {'pos': (155, 590), 'name': 'Visit to Jail',  'owner': ''},
-    13: {'pos': (150, 460), 'name': 'Pollak Library', 'owner': '', 'price': 0},
-    14: {'pos': (155, 315), 'name': 'Electric Co',    'owner': '', 'price': 0},
-    15: {'pos': (155, 170), 'name': 'Mihaylo Hall',   'owner': '', 'price': 0}
+    13: {'pos': (150, 460), 'name': 'Pollak Library', 'owner': '', 'price': 200},
+    14: {'pos': (155, 315), 'name': 'Electric Co',    'owner': '', 'price': 250},
+    15: {'pos': (155, 170), 'name': 'Mihaylo Hall',   'owner': '', 'price': 300}
 }
 
 playerMove = 0
@@ -445,7 +445,7 @@ def roll_and_update():
 
 # End turn message that will display when the user ends their turn to notify players
 def end_turn_message(player):
-    font = pygame.font.Font(None, 30)
+    font = get_font(30)
     text = font.render(
         f"End of Turn: {player['name']}", True, (0, 0, 0))
     text_rect = text.get_rect(center=(635, 515))
