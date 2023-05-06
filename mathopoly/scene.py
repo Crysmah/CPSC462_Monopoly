@@ -175,10 +175,17 @@ def play_button():
         draw_board()
         text_properties()
 
+        # draw_stats(player_list)
+        properties_owned(player_list)
+
         #Create the output box for players' info
         player_info = pygame.Rect(1150, 14, 230, 225)
         pygame.draw.rect(DISPLAY, pygame.Color("beige"), player_info)
         pygame.draw.rect(DISPLAY, pygame.Color("gray"), player_info, 2)
+        # creat the output box for the players property
+        # property_info = pygame.Rect(1150, 720/2, 230, 225)
+        # pygame.draw.rect(DISPLAY, pygame.Color("beige"), property_info)
+        # pygame.draw.rect(DISPLAY, pygame.Color("gray"), property_info, 2)
         #Display player_info
         for i, player in enumerate(player_list):
             player_name_surface = font.render(player['name'], True, pygame.Color("black"))
@@ -189,6 +196,14 @@ def play_button():
                                                  True, pygame.Color("black"))
             DISPLAY.blit(player_balance_surface, (player_info.x +
                                                   130, player_info.y + 15 + i * 50))
+            # #Display property_info
+            # player_name_surface = font.render(player['name'], True, pygame.Color("black"))
+            # DISPLAY.blit(player_name_surface, (property_info.x +
+            #                                    5, property_info.y + 15 + i * 50))
+            # player_property_surface = font.render(str(player['property']), True, pygame.Color("black"))
+            # DISPLAY.blit(player_property_surface, (property_info.x + 
+            #                                     130, property_info.y + 15 + i * 50))
+
 
         scaled_play_back_button = pygame.transform.scale(
             play_back_button, (40, 40))
@@ -225,6 +240,7 @@ def play_button():
             button_rect_image, (190, 50))
         buy_button = Button(scaled_end_turn_button, pos=(820, 370), text_input="Buy", font=get_font(20),
                             base_color="#d7fcd4", hovering_color="White")
+                            
         scaled_end_turn_button = pygame.transform.scale(
             button_rect_image, (190, 50))
         restart = Button(scaled_end_turn_button, pos=(1300, 690), text_input="Restart", font=get_font(20),
@@ -607,7 +623,6 @@ def buy_property(player, tile_number, properties):
         message = f"{properties[tile_number]['owner']} owns this property"
     elif properties[tile_number]['owner'] == '' and player['balance'] >= properties[tile_number]['price']:
         player['balance'] -= properties[tile_number]['price']
-        player['property'] += pro
         properties[tile_number]['owner'] = player['name']
         message = f"{player['name']} bought {properties[tile_number]['name']} for {properties[tile_number]['price']}."
     print(message)
@@ -688,7 +703,7 @@ def text_properties():
 
 
 def gameStatus(player_list, properties):
-    global game_over, winning_player
+    global game_over, winning_player, count
     counts = {}
     for player in player_list:
         counts[player['name']] = 0
@@ -696,7 +711,7 @@ def gameStatus(player_list, properties):
             if prop['owner'] == player['name']:
                 counts[player['name']] += 1
 
-        if counts[player['name']] >= 5:
+        if counts[player['name']] >= 3:
             winning_player = player['name']
             game_over = 1
             stop()
@@ -704,9 +719,33 @@ def gameStatus(player_list, properties):
     print(counts)
     return counts
 
+def properties_owned(player):
+    #Create the output box for players' info
+    font = get_font(20)
+    counts = {}
+    for player in player_list:
+        counts[player['name']] = 0
+        for prop in properties.values():
+            if prop['owner'] == player['name']:
+                counts[player['name']] += 1
+ 
+    # creat the output box for the players property
+    property_info = pygame.Rect(1150, 720/2, 230, 225)
+    pygame.draw.rect(DISPLAY, pygame.Color("beige"), property_info)
+    pygame.draw.rect(DISPLAY, pygame.Color("gray"), property_info, 2)
+    #Display player_info
+    for i, player in enumerate(counts.keys()):
+        #Display property_info
+        player_name_surface = font.render(player, True, pygame.Color("black"))
+        DISPLAY.blit(player_name_surface, (property_info.x +
+                                            5, property_info.y + 15 + i * 50))
+        player_property_surface = font.render(str(counts[player]), True, pygame.Color("black"))
+        DISPLAY.blit(player_property_surface, (property_info.x + 
+                                            130, property_info.y + 15 + i * 50))
+
 def winner_message(player_list, properties):
     global winning_player
-    font = pygame.font.Font(None, 30)
+    font = get_font(20)
     text = font.render(f"Winner: {winning_player}", True, (0, 0, 0))
     text_rect = text.get_rect(center=(635, 515))
     DISPLAY.blit(text, text_rect)
