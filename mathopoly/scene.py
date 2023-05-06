@@ -112,7 +112,7 @@ x = 0
 y = 0
 userInput = ''
 solveMath = False
-
+rightOrWrong = False
 
 def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("mathopoly/images/font.ttf", size)
@@ -238,7 +238,7 @@ def play_button():
                             x = random.randint(1, 10)
                             y = random.randint(1, 10)
                     else:  # Else, you can click the buy and end turn buttons
-                        if buy_button.checkForInput(PLAY_MOUSE_POS) and solveMath == False:
+                        if buy_button.checkForInput(PLAY_MOUSE_POS) and solveMath == False and rightOrWrong == True:
                             buy_event()
                             gameStatus(player_list, properties)
                         if end_turn_button.checkForInput(PLAY_MOUSE_POS) and solveMath == False:
@@ -269,6 +269,7 @@ def play_button():
                 elif event.key == K_RETURN:
                     if x + y == int(userInput):
                         print('Correct')
+                        rightOrWrong = True
                         # creating the message box
                         correct_font = get_font(100)
                         rendered_correct = correct_font.render("Correct", True, BLACK)
@@ -281,6 +282,7 @@ def play_button():
 
                     else:
                         print('Wrong')
+                        rightOrWrong = False
                         # creating the message box
                         wrong_font = get_font(100)
                         rendered_wrong = wrong_font.render("Wrong", True, BLACK)
