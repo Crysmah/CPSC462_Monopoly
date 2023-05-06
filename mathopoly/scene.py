@@ -98,7 +98,7 @@ properties = {
     6: {'pos': (950, 315), 'name': 'Visual Art',     'owner': '', 'price': 150},
     7: {'pos': (950, 460), 'name': 'Gymnasium',      'owner': '', 'price': 100},
     8: {'pos': (950, 590), 'name': 'Free Parking',   'owner': ''},
-    9: {'pos': (760, 590), 'name': 'Mystery Box',    'owner': ''},
+    9: {'pos': (760, 590), 'name': 'Game Store',    'owner': '', 'price': 200},
     10: {'pos': (555, 590), 'name': 'Titan Stadium',  'owner': '', 'price': 300},
     11: {'pos': (360, 590), 'name': 'Titan Union',    'owner': '', 'price': 300},
     12: {'pos': (155, 590), 'name': 'Visit to Jail',  'owner': ''},
