@@ -667,8 +667,6 @@ def text_properties():
 def gameStatus(player_list, properties):
     global game_over
     counts = {}
-    stop()
-    end_music()
     for player in player_list:
         counts[player['name']] = 0
         for prop in properties.values():
@@ -677,5 +675,7 @@ def gameStatus(player_list, properties):
 
         if counts[player['name']] >= 1:
             game_over = 1
+            stop()
+            end_music()
     print(counts)
     return counts
