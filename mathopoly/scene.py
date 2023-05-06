@@ -265,6 +265,7 @@ def play_button():
                             solveMath = True
                             x = random.randint(1, 10)
                             y = random.randint(1, 10)
+                            num = random.randint(1,3)
                     else:  # Else, you can click the buy and end turn buttons
                         if buy_button.checkForInput(PLAY_MOUSE_POS) and solveMath == False and rightOrWrong == True:
                             buy_event()
@@ -295,7 +296,8 @@ def play_button():
                 elif event.key == K_BACKSPACE:
                     userInput = userInput[:-1]
                 elif event.key == K_RETURN:
-                    if x + y == int(userInput):
+
+                    if ((num == 1) and (x + y == int(userInput))) or ((num == 2) and (x - y == int(userInput)) or (y - x == int(userInput))) or ((num == 3) and (x * y == int(userInput))) :
                         print('Correct')
                         rightOrWrong = True
                         # creating the message box
@@ -326,9 +328,23 @@ def play_button():
 
         # Displays only when the roll button is pressed
         if solveMath == True:
-            mathProblem = get_font(40).render(
-                "{0}+{1}".format(x, y), True, (0, 0, 0))
-            block = get_font(40).render(userInput, True, (0, 0, 0))
+            if (num == 1):
+                mathProblem = get_font(40).render(
+                    "{0}+{1}".format(x, y), True, (0, 0, 0))
+                block = get_font(40).render(userInput, True, (0, 0, 0))
+            elif (num == 2):
+                if (y > x):
+                    mathProblem = get_font(40).render(
+                        "{0}-{1}".format(y, x), True, (0, 0, 0))
+                    block = get_font(40).render(userInput, True, (0, 0, 0))
+                else:
+                    mathProblem = get_font(40).render(
+                        "{0}-{1}".format(x, y), True, (0, 0, 0))
+                    block = get_font(40).render(userInput, True, (0, 0, 0))
+            elif (num == 3):
+                mathProblem = get_font(40).render(
+                    "{0}*{1}".format(x, y), True, (0, 0, 0))
+                block = get_font(40).render(userInput, True, (0, 0, 0))
 
             xRect = mathProblem.get_rect()
             rect = block.get_rect()
@@ -360,7 +376,8 @@ def play_button():
 
 # Changing the music and sound
 def setting_button():
-    volume = 0.1 # initialize volume to a default value
+    # initialize volume to a default value
+    volume = pygame.mixer.music.get_volume()
     while True:
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
@@ -368,7 +385,7 @@ def setting_button():
 
         button_rect = pygame.transform.scale(button_rect_image, (300, 80))
         VOLUME_LABEL = get_font(40).render(
-            f"Volume: {int(round(volume * 100, -1))}%", True, (255, 255, 255))
+            f"Volume: {int(round(volume * 100, -1))}%", True, BLACK)
         UP_BUTTON = Button(button_rect, pos=(640 + 60, 300), text_input="UP",
                            font=get_font(40), base_color="#d7fcd4", hovering_color="White")
         DOWN_BUTTON = Button(button_rect, pos=(640 + 60, 450), text_input="DOWN",
