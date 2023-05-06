@@ -90,21 +90,21 @@ board = {
 
 properties = {
     0: {'pos': (155, 35),  'name': 'Go!!',           'owner': ''},
-    1: {'pos': (360, 35),  'name': 'Carl\'s Jr',     'owner': '', 'price': 200},
-    2: {'pos': (560, 35),  'name': 'Bookstore',      'owner': '', 'price': 250},
-    3: {'pos': (760, 35),  'name': 'Titan House',    'owner': '', 'price': 300},
+    1: {'pos': (360, 35),  'name': 'Carl\'s Jr',     'owner': '', 'price': 100},
+    2: {'pos': (560, 35),  'name': 'Bookstore',      'owner': '', 'price': 150},
+    3: {'pos': (760, 35),  'name': 'Titan House',    'owner': '', 'price': 200},
     4: {'pos': (950, 35),  'name': 'Visit to Jail',  'owner': ''},
-    5: {'pos': (950, 170), 'name': 'ECS Building',   'owner': '', 'price': 300},
-    6: {'pos': (950, 315), 'name': 'Visual Art',     'owner': '', 'price': 250},
-    7: {'pos': (950, 460), 'name': 'Gymnasium',      'owner': '', 'price': 200},
+    5: {'pos': (950, 170), 'name': 'ECS Building',   'owner': '', 'price': 200},
+    6: {'pos': (950, 315), 'name': 'Visual Art',     'owner': '', 'price': 150},
+    7: {'pos': (950, 460), 'name': 'Gymnasium',      'owner': '', 'price': 100},
     8: {'pos': (950, 590), 'name': 'Free Parking',   'owner': ''},
     9: {'pos': (760, 590), 'name': 'Mystery Box',    'owner': ''},
-    10: {'pos': (555, 590), 'name': 'Titan Stadium',  'owner': '', 'price': 400},
-    11: {'pos': (360, 590), 'name': 'Titan Union',    'owner': '', 'price': 400},
+    10: {'pos': (555, 590), 'name': 'Titan Stadium',  'owner': '', 'price': 300},
+    11: {'pos': (360, 590), 'name': 'Titan Union',    'owner': '', 'price': 300},
     12: {'pos': (155, 590), 'name': 'Visit to Jail',  'owner': ''},
-    13: {'pos': (150, 460), 'name': 'Pollak Library', 'owner': '', 'price': 200},
-    14: {'pos': (155, 315), 'name': 'Electric Co',    'owner': '', 'price': 250},
-    15: {'pos': (155, 170), 'name': 'Mihaylo Hall',   'owner': '', 'price': 300}
+    13: {'pos': (150, 460), 'name': 'Pollak Library', 'owner': '', 'price': 100},
+    14: {'pos': (155, 315), 'name': 'Electric Co',    'owner': '', 'price': 150},
+    15: {'pos': (155, 170), 'name': 'Mihaylo Hall',   'owner': '', 'price': 200}
 }
 
 playerMove = 0
@@ -607,6 +607,7 @@ def buy_property(player, tile_number, properties):
         message = f"{properties[tile_number]['owner']} owns this property"
     elif properties[tile_number]['owner'] == '' and player['balance'] >= properties[tile_number]['price']:
         player['balance'] -= properties[tile_number]['price']
+        player['property'] += pro
         properties[tile_number]['owner'] = player['name']
         message = f"{player['name']} bought {properties[tile_number]['name']} for {properties[tile_number]['price']}."
     print(message)
