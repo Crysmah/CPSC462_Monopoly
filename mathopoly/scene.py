@@ -160,7 +160,7 @@ def draw_background(image):
 # Access to the game
 def play_button():
     global playerMove, count, plus, minus, roll, x, y, userInput, solveMath, game_over, players
-    font = pygame.font.Font(None, 50)
+    font = get_font(20)
     p = 0
     for i in players:
         player_list[p]['name'] = i
