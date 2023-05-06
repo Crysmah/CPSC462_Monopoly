@@ -34,23 +34,22 @@ dice_images = [pygame.image.load('mathopoly/images/dice_one.png'), pygame.image.
 win_image = pygame.image.load('mathopoly/images/win.png').convert_alpha()
 win_image = pygame.transform.scale(win_image, (250, 250))
 
-# Board coordinates
-# board =  [
-#     (145, 13), (145, 153), (145, 293), (145, 433), (145, 573),
-#     (285, 13), (425, 13), (565, 13), (705, 13), (845, 13), (985, 13),
-#     (985, 153), (985, 293), (985, 433), (985, 573),
-#     (285, 573), (425, 573), (565, 573), (705, 573), (845, 573)
-# ]
-# Square size
-
 WHITE = ((255, 255, 255))
 BLACK = ((0, 0, 0))
 
 dog_piece = pygame.image.load('mathopoly/images/dog.png')
 dog_piece = pygame.transform.scale(dog_piece, (100, 100))
 
-player1 = {'name': 'Alice', 'balance': 1500, 'position': 0, 'piece': dog_piece}
-player2 = {'name': 'Lux', 'balance': 1500, 'position': 0, 'piece': dog_piece}
+plus = pygame.image.load('mathopoly/images/plus_player.jpg')
+plus = pygame.transform.scale(plus, (100, 100))
+plus.set_colorkey((255, 255, 255))
+
+minus = pygame.image.load('mathopoly/images/minus_player.jpg')
+minus = pygame.transform.scale(minus, (100, 100))
+minus.set_colorkey((255, 255, 255))
+
+player1 = {'name': 'Alice', 'balance': 1500,'property': 0, 'position': 0, 'piece': plus}
+player2 = {'name': 'Lux', 'balance': 1500, 'property': 0, 'position': 0, 'piece': minus}
 # player3 = {'name': 'Joe', 'balance': 1500, 'position': 0, 'piece': dog_piece}
 # player4 = {'name': 'Mama', 'balance': 1500, 'position': 0, 'piece': dog_piece}
 
@@ -160,7 +159,7 @@ def draw_background(image):
 
 # Access to the game
 def play_button():
-    global playerMove, count, dog_piece, roll, x, y, userInput, solveMath, game_over, players
+    global playerMove, count, plus, minus, roll, x, y, userInput, solveMath, game_over, players
     font = pygame.font.Font(None, 50)
     p = 0
     for i in players:
@@ -474,14 +473,13 @@ def draw_board():
 
 # displays the pieces for the players
 def draw_piece(player):
-    global dog_piece
     # DISPLAY.blit(dog_piece, (190+210, 35))
     if playerMove >= 4 and playerMove <= 11:
         print("")
     else:
-        dog_piece = pygame.transform.flip(dog_piece, True, False)
+        player_piece = pygame.transform.flip(player['piece'], True, False)
 
-    DISPLAY.blit(dog_piece, board[player['position']])
+    DISPLAY.blit(player_piece, board[player['position']])
 
 # creates the players who will play the game
 def create_players():
