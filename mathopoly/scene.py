@@ -169,13 +169,28 @@ def play_button():
     print(player_list)
 
     while True:
-
         PLAY_MOUSE_POS = pygame.mouse.get_pos()
         draw_background("mathopoly/images/playBackground.png")
         play_back_button = pygame.image.load(
             "mathopoly/images/playBackButton.png")
         draw_board()
         text_properties()
+
+        #Create the output box for players' info
+        player_info = pygame.Rect(1150, 14, 230, 225)
+        pygame.draw.rect(DISPLAY, pygame.Color("beige"), player_info)
+        pygame.draw.rect(DISPLAY, pygame.Color("gray"), player_info, 2)
+        #Display player_info
+        for i, player in enumerate(player_list):
+            player_name_surface = font.render(player['name'], True, pygame.Color("black"))
+            DISPLAY.blit(player_name_surface, (player_info.x +
+                                               5, player_info.y + 15 + i * 50))
+
+            player_balance_surface = font.render(str(player['balance']),
+                                                 True, pygame.Color("black"))
+            DISPLAY.blit(player_balance_surface, (player_info.x +
+                                                  130, player_info.y + 15 + i * 50))
+
         scaled_play_back_button = pygame.transform.scale(
             play_back_button, (40, 40))
         return_button = Button(scaled_play_back_button, pos=(25, 25), text_input="", font=get_font(40),
