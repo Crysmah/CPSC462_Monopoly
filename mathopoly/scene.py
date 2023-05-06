@@ -15,6 +15,8 @@ load_dice_image = 0
 
 game_over = 0
 
+winning_player = ''
+
 pygame.init()
 
 # WIDTH, HEIGHT = 1280, 720
@@ -328,6 +330,7 @@ def play_button():
         if game_over != 0:
             if game_over == 1:
                 DISPLAY.blit(win_image, (500, 250))
+                winner_message(player_list, properties)
 
         pygame.display.update()
 
@@ -433,6 +436,7 @@ def end_turn_message(player):
     show_dice()
     pygame.display.update()
     pygame.time.delay(1800)
+
 
 # Function that shows the dice that was rolled
 def show_dice():
@@ -665,7 +669,7 @@ def text_properties():
 
 
 def gameStatus(player_list, properties):
-    global game_over
+    global game_over, winning_player
     counts = {}
     for player in player_list:
         counts[player['name']] = 0
@@ -673,9 +677,17 @@ def gameStatus(player_list, properties):
             if prop['owner'] == player['name']:
                 counts[player['name']] += 1
 
-        if counts[player['name']] >= 5:
+        if counts[player['name']] >= 1:
+            winning_player = player['name']
             game_over = 1
             stop()
             end_music()
     print(counts)
     return counts
+
+def winner_message(player_list, properties):
+    global winning_player
+    font = pygame.font.Font(None, 30)
+    text = font.render(f"Winner: {winning_player}", True, (0, 0, 0))
+    text_rect = text.get_rect(center=(635, 515))
+    DISPLAY.blit(text, text_rect)
