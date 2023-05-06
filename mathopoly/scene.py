@@ -281,6 +281,7 @@ def play_button():
 
                         for player in player_list:
                             player['position'] = 0
+                            player['balance'] = 1500
 
                         game_over = 0
                         count = 0
