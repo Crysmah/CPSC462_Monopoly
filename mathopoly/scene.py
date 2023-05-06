@@ -182,10 +182,6 @@ def play_button():
         player_info = pygame.Rect(1150, 14, 230, 225)
         pygame.draw.rect(DISPLAY, pygame.Color("beige"), player_info)
         pygame.draw.rect(DISPLAY, pygame.Color("gray"), player_info, 2)
-        # creat the output box for the players property
-        # property_info = pygame.Rect(1150, 720/2, 230, 225)
-        # pygame.draw.rect(DISPLAY, pygame.Color("beige"), property_info)
-        # pygame.draw.rect(DISPLAY, pygame.Color("gray"), property_info, 2)
         #Display player_info
         for i, player in enumerate(player_list):
             player_name_surface = font.render(player['name'], True, pygame.Color("black"))
@@ -196,13 +192,6 @@ def play_button():
                                                  True, pygame.Color("black"))
             DISPLAY.blit(player_balance_surface, (player_info.x +
                                                   130, player_info.y + 15 + i * 50))
-            # #Display property_info
-            # player_name_surface = font.render(player['name'], True, pygame.Color("black"))
-            # DISPLAY.blit(player_name_surface, (property_info.x +
-            #                                    5, property_info.y + 15 + i * 50))
-            # player_property_surface = font.render(str(player['property']), True, pygame.Color("black"))
-            # DISPLAY.blit(player_property_surface, (property_info.x + 
-            #                                     130, property_info.y + 15 + i * 50))
 
 
         scaled_play_back_button = pygame.transform.scale(
@@ -240,7 +229,7 @@ def play_button():
             button_rect_image, (190, 50))
         buy_button = Button(scaled_end_turn_button, pos=(820, 370), text_input="Buy", font=get_font(20),
                             base_color="#d7fcd4", hovering_color="White")
-                            
+
         scaled_end_turn_button = pygame.transform.scale(
             button_rect_image, (190, 50))
         restart = Button(scaled_end_turn_button, pos=(1300, 690), text_input="Restart", font=get_font(20),
