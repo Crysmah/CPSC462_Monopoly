@@ -157,6 +157,33 @@ def draw_background(image):
     background = pygame.transform.scale(background_image,(WIDTH, HEIGHT))
     DISPLAY.blit(background, (0,0))
 
+
+def properties_owned(player):
+    #Create the output box for players' info
+
+    counts = {}
+    for player in player_list:
+        counts[player['name']] = 0
+        for prop in properties.values():
+            if prop['owner'] == player['name']:
+                counts[player['name']] += 1
+ 
+    font = pygame.font.Font(None, 50)
+    player_info = pygame.Rect(1150, 14, 230, 225)
+    pygame.draw.rect(DISPLAY, pygame.Color("beige"), player_info)
+    pygame.draw.rect(DISPLAY, pygame.Color("gray"), player_info, 2)
+    #Display player_info
+    for i, player in enumerate(counts.keys()):
+        player_name_surface = font.render(player, True, pygame.Color("black"))
+        DISPLAY.blit(player_name_surface, (player_info.x +
+                                            5, player_info.y + 15 + i * 50))
+        
+        player_name_surface = font.render(str(counts[player]), True, pygame.Color("black"))
+        DISPLAY.blit(player_name_surface, (player_info.x +
+                                            5 + 130, player_info.y + 15 + i * 50))
+
+
+
 def draw_stats(player):
     #Create the output box for players' info
     font = pygame.font.Font(None, 50)
@@ -194,7 +221,8 @@ def play_button():
         draw_board()
         text_properties()
 
-        draw_stats(player_list)
+        # draw_stats(player_list)
+        properties_owned(player_list)
 
         scaled_play_back_button = pygame.transform.scale(
             play_back_button, (40, 40))
@@ -615,7 +643,6 @@ def buy_property(player, tile_number, properties):
         player['balance'] -= properties[tile_number]['price']
         properties[tile_number]['owner'] = player['name']
         message = f"{player['name']} bought {properties[tile_number]['name']} for {properties[tile_number]['price']}."
-    print(message)
     return message
 
 
@@ -623,6 +650,8 @@ def display_message(message):
     # Clear the screen
     DISPLAY.fill(WHITE)
     draw_background("mathopoly/images/playBackground.png")
+
+    
 
     # Calculate the width of the message
     font = get_font(20)
