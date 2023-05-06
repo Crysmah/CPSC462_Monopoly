@@ -157,6 +157,25 @@ def draw_background(image):
     background = pygame.transform.scale(background_image,(WIDTH, HEIGHT))
     DISPLAY.blit(background, (0,0))
 
+def draw_stats(player):
+    #Create the output box for players' info
+    font = pygame.font.Font(None, 50)
+    player_info = pygame.Rect(1150, 14, 230, 225)
+    pygame.draw.rect(DISPLAY, pygame.Color("beige"), player_info)
+    pygame.draw.rect(DISPLAY, pygame.Color("gray"), player_info, 2)
+    #Display player_info
+    for i, player in enumerate(player_list):
+        player_name_surface = font.render(player['name'], True, pygame.Color("black"))
+        DISPLAY.blit(player_name_surface, (player_info.x +
+                                            5, player_info.y + 15 + i * 50))
+
+        player_balance_surface = font.render(str(player['balance']),
+                                                True, pygame.Color("black"))
+        DISPLAY.blit(player_balance_surface, (player_info.x +
+                                                130, player_info.y + 15 + i * 50))
+
+
+
 # Access to the game
 def play_button():
     global playerMove, count, plus, minus, roll, x, y, userInput, solveMath, game_over, players
@@ -175,20 +194,7 @@ def play_button():
         draw_board()
         text_properties()
 
-        #Create the output box for players' info
-        player_info = pygame.Rect(1150, 14, 230, 225)
-        pygame.draw.rect(DISPLAY, pygame.Color("beige"), player_info)
-        pygame.draw.rect(DISPLAY, pygame.Color("gray"), player_info, 2)
-        #Display player_info
-        for i, player in enumerate(player_list):
-            player_name_surface = font.render(player['name'], True, pygame.Color("black"))
-            DISPLAY.blit(player_name_surface, (player_info.x +
-                                               5, player_info.y + 15 + i * 50))
-
-            player_balance_surface = font.render(str(player['balance']),
-                                                 True, pygame.Color("black"))
-            DISPLAY.blit(player_balance_surface, (player_info.x +
-                                                  130, player_info.y + 15 + i * 50))
+        draw_stats(player_list)
 
         scaled_play_back_button = pygame.transform.scale(
             play_back_button, (40, 40))
@@ -532,7 +538,7 @@ def create_players():
                     pygame.mouse.set_visible(False)
 
                 elif add_Player.rect.collidepoint(MOUSE_POS):
-                    if player_input != "" and len(players) < 4:
+                    if player_input != "" and len(players) < 2:
                         if player_input not in players:
                             players.append(player_input)
                             player_input = ""
@@ -559,7 +565,7 @@ def create_players():
                     player_input = player_input[:-1]
 
                 elif event.key == pygame.K_RETURN:
-                    if player_input != "" and len(players) < 4:
+                    if player_input != "" and len(players) < 2:
                         if player_input not in players:
                             players.append(player_input)
                             player_input = ""
