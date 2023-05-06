@@ -17,6 +17,8 @@ game_over = 0
 
 winning_player = ''
 
+players = []
+
 pygame.init()
 
 # WIDTH, HEIGHT = 1280, 720
@@ -135,6 +137,7 @@ def stop():
     pygame.mixer.fadeout(500)
     pygame.mixer.music.stop()
 
+
 # end screen music
 def end_music():
     """ending music"""
@@ -157,8 +160,14 @@ def draw_background(image):
 
 # Access to the game
 def play_button():
-    global playerMove, count, dog_piece, roll, x, y, userInput, solveMath, game_over
+    global playerMove, count, dog_piece, roll, x, y, userInput, solveMath, game_over, players
     font = pygame.font.Font(None, 50)
+    p = 0
+    for i in players:
+        player_list[p]['name'] = i
+        p += 1
+    print(player_list)
+
     while True:
 
         PLAY_MOUSE_POS = pygame.mouse.get_pos()
@@ -461,7 +470,7 @@ def draw_piece(player):
 
 # creates the players who will play the game
 def create_players():
-    players = []
+    global players
     player_input = ""
     input_rect = pygame.Rect(483, 200, 440, 50)
     input_active = False
