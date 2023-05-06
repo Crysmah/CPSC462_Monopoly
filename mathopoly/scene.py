@@ -17,6 +17,8 @@ game_over = 0
 
 winning_player = ''
 
+players = []
+
 pygame.init()
 
 # WIDTH, HEIGHT = 1280, 720
@@ -32,23 +34,22 @@ dice_images = [pygame.image.load('mathopoly/images/dice_one.png'), pygame.image.
 win_image = pygame.image.load('mathopoly/images/win.png').convert_alpha()
 win_image = pygame.transform.scale(win_image, (250, 250))
 
-# Board coordinates
-# board =  [
-#     (145, 13), (145, 153), (145, 293), (145, 433), (145, 573),
-#     (285, 13), (425, 13), (565, 13), (705, 13), (845, 13), (985, 13),
-#     (985, 153), (985, 293), (985, 433), (985, 573),
-#     (285, 573), (425, 573), (565, 573), (705, 573), (845, 573)
-# ]
-# Square size
-
 WHITE = ((255, 255, 255))
 BLACK = ((0, 0, 0))
 
 dog_piece = pygame.image.load('mathopoly/images/dog.png')
 dog_piece = pygame.transform.scale(dog_piece, (100, 100))
 
-player1 = {'name': 'Alice', 'balance': 1500, 'position': 0, 'piece': dog_piece}
-player2 = {'name': 'Lux', 'balance': 1500, 'position': 0, 'piece': dog_piece}
+plus = pygame.image.load('mathopoly/images/plus.png')
+plus = pygame.transform.scale(plus, (100, 100))
+plus.set_colorkey((255, 255, 255))
+
+minus = pygame.image.load('mathopoly/images/minus.png')
+minus = pygame.transform.scale(minus, (100, 50))
+minus.set_colorkey((255, 255, 255))
+
+player1 = {'name': 'Alice', 'balance': 1500,'property': 0, 'position': 0, 'piece': plus}
+player2 = {'name': 'Lux', 'balance': 1500, 'property': 0, 'position': 0, 'piece': minus}
 # player3 = {'name': 'Joe', 'balance': 1500, 'position': 0, 'piece': dog_piece}
 # player4 = {'name': 'Mama', 'balance': 1500, 'position': 0, 'piece': dog_piece}
 
@@ -89,21 +90,21 @@ board = {
 
 properties = {
     0: {'pos': (155, 35),  'name': 'Go!!',           'owner': ''},
-    1: {'pos': (360, 35),  'name': 'Carl\'s Jr',     'owner': '', 'price': 0},
-    2: {'pos': (560, 35),  'name': 'Bookstore',      'owner': '', 'price': 0},
-    3: {'pos': (760, 35),  'name': 'Titan House',    'owner': '', 'price': 0},
+    1: {'pos': (360, 35),  'name': 'Carl\'s Jr',     'owner': '', 'price': 100},
+    2: {'pos': (560, 35),  'name': 'Bookstore',      'owner': '', 'price': 150},
+    3: {'pos': (760, 35),  'name': 'Titan House',    'owner': '', 'price': 200},
     4: {'pos': (950, 35),  'name': 'Visit to Jail',  'owner': ''},
-    5: {'pos': (950, 170), 'name': 'ECS Building',   'owner': '', 'price': 0},
-    6: {'pos': (950, 315), 'name': 'Visual Art',     'owner': '', 'price': 0},
-    7: {'pos': (950, 460), 'name': 'Gymnasium',      'owner': '', 'price': 0},
+    5: {'pos': (950, 170), 'name': 'ECS Building',   'owner': '', 'price': 200},
+    6: {'pos': (950, 315), 'name': 'Visual Art',     'owner': '', 'price': 150},
+    7: {'pos': (950, 460), 'name': 'Gymnasium',      'owner': '', 'price': 100},
     8: {'pos': (950, 590), 'name': 'Free Parking',   'owner': ''},
-    9: {'pos': (760, 590), 'name': 'Mystery Box',    'owner': ''},
-    10: {'pos': (555, 590), 'name': 'Titan Stadium',  'owner': '', 'price': 0},
-    11: {'pos': (360, 590), 'name': 'Titan Union',    'owner': '', 'price': 0},
+    9: {'pos': (760, 590), 'name': 'Game Store',    'owner': '', 'price': 200},
+    10: {'pos': (555, 590), 'name': 'Titan Stadium',  'owner': '', 'price': 300},
+    11: {'pos': (360, 590), 'name': 'Titan Union',    'owner': '', 'price': 300},
     12: {'pos': (155, 590), 'name': 'Visit to Jail',  'owner': ''},
-    13: {'pos': (150, 460), 'name': 'Pollak Library', 'owner': '', 'price': 0},
-    14: {'pos': (155, 315), 'name': 'Electric Co',    'owner': '', 'price': 0},
-    15: {'pos': (155, 170), 'name': 'Mihaylo Hall',   'owner': '', 'price': 0}
+    13: {'pos': (150, 460), 'name': 'Pollak Library', 'owner': '', 'price': 100},
+    14: {'pos': (155, 315), 'name': 'Electric Co',    'owner': '', 'price': 150},
+    15: {'pos': (155, 170), 'name': 'Mihaylo Hall',   'owner': '', 'price': 200}
 }
 
 playerMove = 0
@@ -135,6 +136,7 @@ def stop():
     pygame.mixer.fadeout(500)
     pygame.mixer.music.stop()
 
+
 # end screen music
 def end_music():
     """ending music"""
@@ -157,16 +159,41 @@ def draw_background(image):
 
 # Access to the game
 def play_button():
-    global playerMove, count, dog_piece, roll, x, y, userInput, solveMath, game_over
-    font = pygame.font.Font(None, 50)
-    while True:
+    global playerMove, count, plus, minus, roll, x, y, userInput, solveMath, game_over, players
+    font = get_font(20)
+    p = 0
+    for i in players:
+        player_list[p]['name'] = i
+        p += 1
+    print(player_list)
 
+    while True:
         PLAY_MOUSE_POS = pygame.mouse.get_pos()
         draw_background("mathopoly/images/playBackground.png")
         play_back_button = pygame.image.load(
             "mathopoly/images/playBackButton.png")
         draw_board()
         text_properties()
+
+        # draw_stats(player_list)
+        properties_owned(player_list)
+
+        #Create the output box for players' info
+        player_info = pygame.Rect(1150, 14, 230, 225)
+        pygame.draw.rect(DISPLAY, pygame.Color("beige"), player_info)
+        pygame.draw.rect(DISPLAY, pygame.Color("gray"), player_info, 2)
+        #Display player_info
+        for i, player in enumerate(player_list):
+            player_name_surface = font.render(player['name'], True, pygame.Color("black"))
+            DISPLAY.blit(player_name_surface, (player_info.x +
+                                               5, player_info.y + 15 + i * 50))
+
+            player_balance_surface = font.render(str(player['balance']),
+                                                 True, pygame.Color("black"))
+            DISPLAY.blit(player_balance_surface, (player_info.x +
+                                                  130, player_info.y + 15 + i * 50))
+
+
         scaled_play_back_button = pygame.transform.scale(
             play_back_button, (40, 40))
         return_button = Button(scaled_play_back_button, pos=(25, 25), text_input="", font=get_font(40),
@@ -202,6 +229,7 @@ def play_button():
             button_rect_image, (190, 50))
         buy_button = Button(scaled_end_turn_button, pos=(820, 370), text_input="Buy", font=get_font(20),
                             base_color="#d7fcd4", hovering_color="White")
+
         scaled_end_turn_button = pygame.transform.scale(
             button_rect_image, (190, 50))
         restart = Button(scaled_end_turn_button, pos=(1300, 690), text_input="Restart", font=get_font(20),
@@ -422,7 +450,7 @@ def roll_and_update():
 
 # End turn message that will display when the user ends their turn to notify players
 def end_turn_message(player):
-    font = pygame.font.Font(None, 30)
+    font = get_font(30)
     text = font.render(
         f"End of Turn: {player['name']}", True, (0, 0, 0))
     text_rect = text.get_rect(center=(635, 515))
@@ -450,18 +478,17 @@ def draw_board():
 
 # displays the pieces for the players
 def draw_piece(player):
-    global dog_piece
     # DISPLAY.blit(dog_piece, (190+210, 35))
     if playerMove >= 4 and playerMove <= 11:
         print("")
     else:
-        dog_piece = pygame.transform.flip(dog_piece, True, False)
+        player_piece = pygame.transform.flip(player['piece'], True, False)
 
-    DISPLAY.blit(dog_piece, board[player['position']])
+    DISPLAY.blit(player_piece, board[player['position']])
 
 # creates the players who will play the game
 def create_players():
-    players = []
+    global players
     player_input = ""
     input_rect = pygame.Rect(483, 200, 440, 50)
     input_active = False
@@ -665,7 +692,7 @@ def text_properties():
 
 
 def gameStatus(player_list, properties):
-    global game_over, winning_player
+    global game_over, winning_player, count
     counts = {}
     for player in player_list:
         counts[player['name']] = 0
@@ -673,7 +700,7 @@ def gameStatus(player_list, properties):
             if prop['owner'] == player['name']:
                 counts[player['name']] += 1
 
-        if counts[player['name']] >= 5:
+        if counts[player['name']] >= 3:
             winning_player = player['name']
             game_over = 1
             stop()
@@ -681,9 +708,33 @@ def gameStatus(player_list, properties):
     print(counts)
     return counts
 
+def properties_owned(player):
+    #Create the output box for players' info
+    font = get_font(20)
+    counts = {}
+    for player in player_list:
+        counts[player['name']] = 0
+        for prop in properties.values():
+            if prop['owner'] == player['name']:
+                counts[player['name']] += 1
+ 
+    # creat the output box for the players property
+    property_info = pygame.Rect(1150, 720/2, 230, 225)
+    pygame.draw.rect(DISPLAY, pygame.Color("beige"), property_info)
+    pygame.draw.rect(DISPLAY, pygame.Color("gray"), property_info, 2)
+    #Display player_info
+    for i, player in enumerate(counts.keys()):
+        #Display property_info
+        player_name_surface = font.render(player, True, pygame.Color("black"))
+        DISPLAY.blit(player_name_surface, (property_info.x +
+                                            5, property_info.y + 15 + i * 50))
+        player_property_surface = font.render(str(counts[player]), True, pygame.Color("black"))
+        DISPLAY.blit(player_property_surface, (property_info.x + 
+                                            130, property_info.y + 15 + i * 50))
+
 def winner_message(player_list, properties):
     global winning_player
-    font = pygame.font.Font(None, 30)
+    font = get_font(20)
     text = font.render(f"Winner: {winning_player}", True, (0, 0, 0))
     text_rect = text.get_rect(center=(635, 515))
     DISPLAY.blit(text, text_rect)
