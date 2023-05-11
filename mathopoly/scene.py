@@ -1,6 +1,5 @@
 import pygame, sys
 from mathopoly.button import Button
-from mathopoly.mathProblems import MathQuiz
 import random
 import time
 from pygame.locals import *
