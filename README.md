@@ -18,6 +18,4 @@ Objective: The purpose of Mathopoly is to help children practice their math skil
 
 Dependencies:
 
-    ```
     Pygame
-    ```
