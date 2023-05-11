@@ -3,11 +3,12 @@
 Group 9
 
 Contributors:
-Quoc Bao Le (Team Lead)
-Ali Tahami
-Javier Diaz
-Marco Gabriel
-Phuoc Nguyen
+
+    Quoc Bao Le (Team Lead)
+    Ali Tahami
+    Javier Diaz
+    Marco Gabriel
+    Phuoc Nguyen
 
 - Mathopoly is compatible on Windows, Mac and Linux as of 5/10/2023
 
